@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:security="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
-<!--   静态资源(css, img, js..., login.html)-->
+    <!--   静态资源(css, img, js..., login.html)-->
     <security:http pattern="/css/**" security="none"/>
     <security:http pattern="/img/**" security="none"/>
     <security:http pattern="/js/**" security="none"/>
@@ -27,12 +27,12 @@
                              default-target-url="/pages/main.html"
                              always-use-default-target="true"/>
         <security:headers>
-<!--   frame-options 控制页面中嵌套frame（访问其它页面，把其它页面的内容展示在这个页面上)
-         policy 使用的策略:
-             DENY: 不允许访问
-             SAMEORIGIN: 同域可以访问
-             ALLOW-FROM: 指定url可以访问
- -->
+            <!--   frame-options 控制页面中嵌套frame（访问其它页面，把其它页面的内容展示在这个页面上)
+                     policy 使用的策略:
+                         DENY: 不允许访问
+                         SAMEORIGIN: 同域可以访问
+                         ALLOW-FROM: 指定url可以访问
+             -->
             <security:frame-options policy="SAMEORIGIN"/>
         </security:headers>
         <security:csrf disabled="true"/>
@@ -51,11 +51,11 @@
             <security:password-encoder ref="encoder"/>
         </security:authentication-provider>
     </security:authentication-manager>
-   <!--注册springSecurityUserService
-   注册密码加密器-->
+    <!--注册springSecurityUserService
+    注册密码加密器-->
     <!--<bean id="springSecurityUserService" class="com.itheima.health.security.SpringSecurityUserService"/>-->
     <bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 
-<!--  权限控制注解支持  -->
+    <!--  权限控制注解支持  -->
     <security:global-method-security pre-post-annotations="enabled"/>
 </beans>

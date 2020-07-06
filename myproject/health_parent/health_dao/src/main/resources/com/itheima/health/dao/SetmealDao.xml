@@ -141,4 +141,9 @@
         where s.id=o.setmeal_id
         group by s.name
     </select>
+
+    <!--获取上架的检查项的所有id-->
+    <select id="findAllBySetmealToIds" resultType="java.lang.String">
+        select setmeal_id from t_setmeal_checkgroup
+    </select>
 </mapper>
