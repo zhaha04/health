@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.itheima.health.pojo.CheckItem;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Description: No Description
@@ -55,4 +56,11 @@ public interface CheckItemDao {
     void update(CheckItem checkitem);
 
     List<CheckItem> findByCondition2(String queryString);
+
+    /**
+     * 获取被关联的检查项的所有id
+     * @return
+     */
+    Set<String> findAllByCheckeitemToIds();
+
 }

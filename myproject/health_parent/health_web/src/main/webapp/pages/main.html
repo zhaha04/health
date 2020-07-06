@@ -213,7 +213,8 @@
         },
         mounted(){
             // 获取登陆用户名
-            axios.get('/user/getLoginUsername.do').then(res => {
+            axios.
+            get('/user/getLoginUsername.do').then(res => {
                 if(res.data.flag){
                     this.loginUsername = res.data.data;
                 }else{
