@@ -3,6 +3,7 @@
          xmlns="http://java.sun.com/xml/ns/javaee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          id="WebApp_ID" version="3.0">
+
     <display-name>Health</display-name>
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>
@@ -45,6 +46,6 @@
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>/pages/main.html</welcome-file>
+        <welcome-file>pages/main.html</welcome-file>
     </welcome-file-list>
 </web-app>
