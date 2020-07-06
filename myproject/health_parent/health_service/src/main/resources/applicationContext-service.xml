@@ -16,4 +16,6 @@
     <import resource="classpath:applicationContext-tx.xml"/>
 <!--  导入freemarker  -->
     <import resource="classpath:applicationContext-freemarker.xml"/>
+
+    <import resource="classpath:spring-jedis.xml"/>
 </beans>
