@@ -10,16 +10,26 @@
         <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
         <!-- 引入样式 -->
         <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../plugins/elementui/index.css">
         <script src="../plugins/echarts.js"></script>
     </head>
     <body class="hold-transition">
         <div id="app">
-            <div class="content-header">
-                <h1>统计分析<small>会员数量</small></h1>
+            <div class="content-header" id="dateApp">
+                <h1>统计分析<small>会员数量</small>
+                    <input type="date" id="startTime" v-model="startTime">
+                    <input type="date" id="endTime"  v-model="endTime">
+                    <input type="button" value="搜索" @click="fixeTimefindMember()">
+                </h1>
                 <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
                     <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
                     <el-breadcrumb-item>统计分析</el-breadcrumb-item>
                     <el-breadcrumb-item>会员数量</el-breadcrumb-item>
+                    <div class="block">
+                        <span class="demonstration">默认</span>
+
+                    </div>
+
                 </el-breadcrumb>
             </div>
             <div class="app-container">
@@ -29,43 +39,91 @@
                 </div>
             </div>
         </div>
+
     </body>
     <!-- 引入组件库 -->
     <script src="../js/vue.js"></script>
+    <script src="../plugins/elementui/index.js"></script>
     <script src="../js/axios-0.18.0.js"></script>
     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
-        var myChart1 = echarts.init(document.getElementById('chart1'));
+        new Vue({
+            el: '#app',
+            data: {
+                startTime: '',
+                endTime: '',
+                myChart1:''
+            },
+            created() {
+            },
+            mounted() {
+                this.myChart1 = echarts.init(document.getElementById('chart1'));
 
-        // 使用刚指定的配置项和数据显示图表。
-        //myChart.setOption(option);
+                // 使用刚指定的配置项和数据显示图表。
+                //myChart.setOption(option);
 
-        axios.get("/report/getMemberReport.do").then((res)=>{
-            if(res.data.flag) {
-                myChart1.setOption(
-                    {
-                        title: {
-                            text: '会员数量'
-                        },
-                        tooltip: {},
-                        legend: {
-                            data: ['会员数量']
-                        },
-                        xAxis: {
-                            data: res.data.data.months
-                        },
-                        yAxis: {
-                            type: 'value'
-                        },
-                        series: [{
-                            name: '会员数量',
-                            type: 'line',
-                            data: res.data.data.memberCount
-                        }]
-                    });
-            }else{
-                this.$message.error(res.data.message);
+                axios.get("/report/getMemberReport.do").then((res) => {
+                    if (res.data.flag) {
+                        this.myChart1.setOption(
+                            {
+                                title: {
+                                    text: '会员数量'
+                                },
+                                tooltip: {},
+                                legend: {
+                                    data: ['会员数量']
+                                },
+                                xAxis: {
+                                    data: res.data.data.months
+                                },
+                                yAxis: {
+                                    type: 'value'
+                                },
+                                series: [{
+                                    name: '会员数量',
+                                    type: 'line',
+                                    data: res.data.data.memberCount
+                                }]
+                            });
+                    } else {
+                        this.$message.error(res.data.message);
+                    }
+                });
+            },
+            methods: {
+                fixeTimefindMember() {
+
+                    axios.post("/report/fixeTimefindMember.do?startTime=" + this.startTime + "&endTime=" + this.endTime).then((res) => {
+                        if (res.data.flag) {
+                            this.myChart1.setOption(
+                                {
+                                    title: {
+                                        text: '会员数量'
+                                    },
+                                    tooltip: {},
+                                    legend: {
+                                        data: ['会员数量']
+                                    },
+                                    xAxis: {
+                                        data: res.data.data.months
+                                    },
+                                    yAxis: {
+                                        type: 'value'
+                                    },
+                                    series: [{
+                                        name: '会员数量',
+                                        type: 'line',
+                                        data: res.data.data.memberCount
+                                    }]
+                                });
+                        } else {
+                            this.$message.error(res.data.message);
+                        }})
+                }
             }
-        });
+        })
+
+
+
     </script>
 </html>

@@ -86,4 +86,24 @@ public class ReportServiceImpl implements ReportService {
 
         return reportData;
     }
+
+
+    @Override
+    public int findMemberCount(Date sDate)throws Exception{
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
+        String date = simpleDateFormat.format(sDate);
+        String fristD = date + "-01";
+        String lastD = date + "-31";
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date fristDay = format.parse(fristD);
+        Date lastDay = format.parse(lastD);
+            return memberDao.findByMonthMemberCount(fristDay,lastDay );
+
+
+
+    }
+
+
 }

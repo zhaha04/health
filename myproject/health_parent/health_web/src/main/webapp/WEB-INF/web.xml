@@ -45,6 +45,6 @@
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>/pages/main.html</welcome-file>
+        <welcome-file>pages/main.html</welcome-file>
     </welcome-file-list>
-</web-app>
+</web-app>  

@@ -19,13 +19,13 @@ public class UserController {
     /**
      * 获取登陆用户名
      */
-    @GetMapping("/getLoginUsername")
-    public Result getLoginUsername(){
+@GetMapping("/getLoginUsername")
+public Result getLoginUsername(){
         // 获取登陆用户的认证信息
         User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         // 登陆用户名
         String username = loginUser.getUsername();
         // 返回给前端
         return new Result(true, MessageConstant.GET_USERNAME_SUCCESS,username);
-    }
-}
+        }
+        }
