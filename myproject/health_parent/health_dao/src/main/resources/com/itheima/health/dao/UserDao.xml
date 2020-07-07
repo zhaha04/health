@@ -55,15 +55,9 @@
           u.`username`,
           u.`remark`,
           u.`station`,
-          u.`telephone`,
-          ur.role_id,
-          r.`name` as role_name
+          u.`telephone`
         FROM
-          t_user u 
-          left join t_user_role ur
-            on u.`id`=ur.`user_id`
-          left join t_role r
-            on r.`id`=ur.`role_id`        
+          t_user u        
           <if test="_parameter != null and _parameter.length > 0">
               where
                 u.`telephone` like #{queryString}
@@ -122,4 +116,24 @@
           values
             (#{userId},#{roleId})
     </insert>
+    
+    <!--通过ID查询用户-->
+    <select id="findUserById" parameterType="int" resultType="User">
+        select 
+          *
+        from 
+          t_user
+        where 
+          id = #{id}
+    </select>
+    
+    <!--通过用户ID查询角色ID-->
+    <select id="findRoleIdsByUserId" parameterType="int" resultType="int">
+        select 
+          role_id
+        from 
+          t_user_role
+        where 
+          user_id = #{id}
+    </select>
 </mapper>

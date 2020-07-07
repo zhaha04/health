@@ -10,6 +10,9 @@ import com.itheima.health.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Description: No Description
  * User: Eric
@@ -36,7 +39,20 @@ public class UserController {
     }
 
     /**
-     * 通过用户id获取用户信息
+     * 通过id不分页获取用户信息
+     */
+    @GetMapping("/findUserById")
+    public Result findUserById(int id){
+        
+        //调用服务
+        User user = userService.findUserById(id);
+        
+        //返回
+        return new Result(true,MessageConstant.QUERY_USER_SUCCESS,user);
+    }
+    
+    /**
+     * 通过id分页获取用户信息
      */
     @PostMapping("/findUserByPage")
     public Result findUserByPage(@RequestBody QueryPageBean queryPageBean) {
@@ -69,5 +85,15 @@ public class UserController {
         
         //返回结果
         return new Result(true,MessageConstant.ADD_USER_SUCCESS);
+    }
+
+    /**
+     * 通过用户ID查询所有的角色ID
+     */
+    @GetMapping("/findRoleIdsByUserId")
+    public Result findRoleIdsByUserId(int id){
+
+        List<Integer> roleIds = userService.findRoleIdsByUserId(id);
+        return new Result(true,MessageConstant.QUERY_ROLE_SUCCESS,roleIds);
     }
 }

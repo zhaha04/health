@@ -4,6 +4,8 @@ package com.itheima.health.constant;
  * 消息常量
  */
 public interface MessageConstant {
+    static final String QUERY_USER_SUCCESS = "查询用户成功";
+    static final String QUERY_USER_FAIL = "查询用户失败";
     static final String DELETE_CHECKITEM_FAIL = "删除检查项失败";
     static final String CHECKITEM_IN_USE = "此检查项已经被使用了，不能删除";
     static final String DELETE_CHECKITEM_SUCCESS = "删除检查项成功";
