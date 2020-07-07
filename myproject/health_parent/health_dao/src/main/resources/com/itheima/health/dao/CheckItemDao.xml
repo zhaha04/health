@@ -72,4 +72,9 @@ select count(*) from t_checkitem;  3
         select * from t_checkitem  where id
         in (select checkitem_id from t_checkgroup_checkitem where checkgroup_id=#{id})
     </select>
+
+
+    <select id="findAllByCheckeitemToIds" resultType="java.lang.String">
+        select `checkitem_id` from t_checkgroup_checkitem
+    </select>
 </mapper>

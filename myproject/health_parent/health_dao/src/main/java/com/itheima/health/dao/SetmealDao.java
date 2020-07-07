@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Description: No Description
@@ -112,4 +113,10 @@ public interface SetmealDao {
      * @return
      */
     List<Map<String, Object>> findSetmealCount();
+
+    /**
+     * 获取上架的检查项的所有id
+     * @return
+     */
+    Set<String> findAllBySetmealToIds();
 }

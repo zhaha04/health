@@ -2,6 +2,7 @@ package com.itheima.health.service;
 
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
+import com.itheima.health.exception.GoodsInSoldException;
 import com.itheima.health.exception.HealthException;
 import com.itheima.health.pojo.Setmeal;
 
@@ -15,6 +16,7 @@ import java.util.Map;
 public interface SetmealService {
     /**
      * 添加套餐
+     *
      * @param setmeal
      * @param checkgroupIds
      */
@@ -22,6 +24,7 @@ public interface SetmealService {
 
     /**
      * 分页查询
+     *
      * @param queryPageBean
      * @return
      */
@@ -29,6 +32,7 @@ public interface SetmealService {
 
     /**
      * 通过id查询
+     *
      * @param id
      * @return
      */
@@ -36,6 +40,7 @@ public interface SetmealService {
 
     /**
      * 通过id查询选中的检查组ids
+     *
      * @param id
      * @return
      */
@@ -43,32 +48,37 @@ public interface SetmealService {
 
     /**
      * 修改套餐
+     *
      * @param setmeal
      * @param checkgroupIds
      */
-    void update(Setmeal setmeal, Integer[] checkgroupIds);
+    void update(Setmeal setmeal, Integer[] checkgroupIds) throws GoodsInSoldException;
 
     /**
      * 通过id删除套餐
+     *
      * @param id
      */
-    void deleteById(int id) throws HealthException;
+    void deleteById(int id) throws GoodsInSoldException;
 
     /**
      * 查询所有
+     *
      * @return
      */
-    List<Setmeal> findAll();
+    List<Setmeal> findAll() throws Exception;
 
     /**
      * 查询套餐详情
+     *
      * @param id
      * @return
      */
-    Setmeal findDetailById(int id);
+    Setmeal findDetailById(int id) throws Exception;
 
     /**
      * 查询套餐详情
+     *
      * @param id
      * @return
      */
@@ -76,6 +86,7 @@ public interface SetmealService {
 
     /**
      * 查询套餐详情 方式三
+     *
      * @param id
      * @return
      */
@@ -83,6 +94,7 @@ public interface SetmealService {
 
     /**
      * 获取套餐的预约数量
+     *
      * @return
      */
     List<Map<String, Object>> findSetmealCount();

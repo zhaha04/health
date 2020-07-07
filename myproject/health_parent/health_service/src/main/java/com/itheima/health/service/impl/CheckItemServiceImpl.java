@@ -7,13 +7,17 @@ import com.itheima.health.constant.MessageConstant;
 import com.itheima.health.dao.CheckItemDao;
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
+import com.itheima.health.exception.GoodsInSoldException;
 import com.itheima.health.exception.HealthException;
 import com.itheima.health.pojo.CheckItem;
 import com.itheima.health.service.CheckItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Description: No Description
@@ -28,8 +32,13 @@ public class CheckItemServiceImpl implements CheckItemService {
     @Autowired
     private CheckItemDao checkItemDao;
 
+    @Autowired
+    private JedisPool jedisPool;
+
+
     /**
      * 查询 所有检查项
+     *
      * @return
      */
     @Override
@@ -39,6 +48,7 @@ public class CheckItemServiceImpl implements CheckItemService {
 
     /**
      * 新增检查项
+     *
      * @param checkitem
      */
     @Override
@@ -48,6 +58,7 @@ public class CheckItemServiceImpl implements CheckItemService {
 
     /**
      * 分页查询
+     *
      * @param queryPageBean
      * @return
      */
@@ -57,7 +68,7 @@ public class CheckItemServiceImpl implements CheckItemService {
         //PageHelper.startPage(queryPageBean.getCurrentPage(), queryPageBean.getPageSize());
         // 模糊查询 拼接 %
         // 判断是否有查询条件
-        if(!StringUtils.isEmpty(queryPageBean.getQueryString())){
+        if (!StringUtils.isEmpty(queryPageBean.getQueryString())) {
             // 有查询条件，拼接%
             queryPageBean.setQueryString("%" + queryPageBean.getQueryString() + "%");
         }
@@ -65,21 +76,27 @@ public class CheckItemServiceImpl implements CheckItemService {
         //Page<CheckItem> page = checkItemDao.findByCondition(queryPageBean.getQueryString());
         //PageResult<CheckItem> pageResult = new PageResult<CheckItem>(page.getTotal(), page.getResult());
         List<CheckItem> list = checkItemDao.findByCondition2(queryPageBean.getQueryString());
-        PageResult<CheckItem> pageResult = new PageResult<CheckItem>((long)list.size(), list);
+        PageResult<CheckItem> pageResult = new PageResult<CheckItem>((long) list.size(), list);
         return pageResult;
     }
 
     /**
      * 删除
+     *
      * @param id
      */
     @Override
     public void deleteById(int id) {
+
+        // 判断商品是否被关联
+        this.isCheckItemByGoods(String.valueOf(id));
+
+
         //先判断这个检查项是否被检查组使用了
         //调用dao查询检查项的id是否在t_checkgroup_checkitem表中存在记录
         int cnt = checkItemDao.findCountByCheckItemId(id);
         //被使用了则不能删除
-        if(cnt > 0){
+        if (cnt > 0) {
             //??? health_web能捕获到这个异常吗？
             throw new HealthException(MessageConstant.CHECKITEM_IN_USE);
         }
@@ -89,6 +106,7 @@ public class CheckItemServiceImpl implements CheckItemService {
 
     /**
      * 通过id查询
+     *
      * @param id
      * @return
      */
@@ -99,10 +117,43 @@ public class CheckItemServiceImpl implements CheckItemService {
 
     /**
      * 更新
+     *
      * @param checkitem
      */
     @Override
     public void update(CheckItem checkitem) {
+
+        // 判断商品是否被关联
+        this.isCheckItemByGoods(checkitem.getId().toString());
+
         checkItemDao.update(checkitem);
+
+
+    }
+
+
+    /**
+     * 获取被关联的检查项的所有id
+     *
+     * @return
+     */
+    @Override
+    public Set<String> findAllByCheckeitemToIds() {
+        return checkItemDao.findAllByCheckeitemToIds();
+    }
+
+
+    /**
+     * 判断商品是否被关联
+     */
+    private void isCheckItemByGoods(String strid) {
+        Jedis jedis = jedisPool.getResource();
+        // 查看是否被关联，没有被关联则可以修改
+        String id = jedis.hget("checkitem_id", strid);
+        if (id != null) {
+            jedis.close();
+            // 如果被关联，不能被修改，抛商品在售异常
+            throw new GoodsInSoldException();
+        }
     }
 }

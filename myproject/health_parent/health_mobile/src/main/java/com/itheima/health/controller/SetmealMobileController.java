@@ -27,61 +27,62 @@ public class SetmealMobileController {
      * 查询所有
      */
     @GetMapping("/getSetmeal")
-    public Result getSetmeal(){
+    public Result getSetmeal() throws Exception {
         // 查询所有的套餐
         List<Setmeal> list = setmealService.findAll();
+        System.out.println(list);
         // 套餐里有图片有全路径吗? 拼接全路径
-        list.forEach(s->{
+        list.forEach(s -> {
             s.setImg(QiNiuUtils.DOMAIN + s.getImg());
         });
-        return new Result(true, MessageConstant.GET_SETMEAL_LIST_SUCCESS,list);
+        return new Result(true, MessageConstant.GET_SETMEAL_LIST_SUCCESS, list);
     }
 
     /**
      * 查询套餐详情
      */
     @GetMapping("/findById")
-    public Result findById(int id){
+    public Result findById(int id) {
         // 调用服务查询详情
         Setmeal setmeal = setmealService.findById(id);
         // 设置图片的完整路径
         setmeal.setImg(QiNiuUtils.DOMAIN + setmeal.getImg());
-        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS,setmeal);
+        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS, setmeal);
     }
 
     /**
      * 查询套餐详情
      */
     @GetMapping("/findDetailById")
-    public Result findDetailById(int id){
+    public Result findDetailById(int id) throws Exception {
         // 调用服务查询详情
         Setmeal setmeal = setmealService.findDetailById(id);
         // 设置图片的完整路径
         setmeal.setImg(QiNiuUtils.DOMAIN + setmeal.getImg());
-        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS,setmeal);
+        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS, setmeal);
     }
 
     /**
      * 查询套餐详情
      */
     @GetMapping("/findDetailById2")
-    public Result findDetailById2(int id){
+    public Result findDetailById2(int id) {
         // 调用服务查询详情
         Setmeal setmeal = setmealService.findDetailById2(id);
         // 设置图片的完整路径
         setmeal.setImg(QiNiuUtils.DOMAIN + setmeal.getImg());
-        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS,setmeal);
+        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS, setmeal);
     }
 
     /**
      * 查询套餐详情
      */
     @GetMapping("/findDetailById3")
-    public Result findDetailById3(int id){
+    public Result findDetailById3(int id) {
         // 调用服务查询详情
         Setmeal setmeal = setmealService.findDetailById3(id);
         // 设置图片的完整路径
         setmeal.setImg(QiNiuUtils.DOMAIN + setmeal.getImg());
-        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS,setmeal);
+        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS, setmeal);
     }
 }

@@ -2,10 +2,12 @@ package com.itheima.health.service;
 
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
+import com.itheima.health.exception.GoodsInSoldException;
 import com.itheima.health.exception.HealthException;
 import com.itheima.health.pojo.CheckGroup;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Description: No Description
@@ -14,6 +16,7 @@ import java.util.List;
 public interface CheckGroupService {
     /**
      * 添加检查组
+     *
      * @param checkGroup
      * @param checkitemIds
      */
@@ -21,6 +24,7 @@ public interface CheckGroupService {
 
     /**
      * 分页条件查询
+     *
      * @param queryPageBean
      * @return
      */
@@ -28,6 +32,7 @@ public interface CheckGroupService {
 
     /**
      * 通过检查组id查询选中的检查项id
+     *
      * @param checkGroupId
      * @return
      */
@@ -35,6 +40,7 @@ public interface CheckGroupService {
 
     /**
      * 通过id获取检查组
+     *
      * @param checkGroupId
      * @return
      */
@@ -42,20 +48,32 @@ public interface CheckGroupService {
 
     /**
      * 修改检查组
+     *
      * @param checkGroup
      * @param checkitemIds
      */
-    void update(CheckGroup checkGroup, Integer[] checkitemIds);
+    void update(CheckGroup checkGroup, Integer[] checkitemIds) throws GoodsInSoldException;
 
     /**
      * 删除检查组
+     *
      * @param id
      */
-    void deleteById(int id) throws HealthException;
+    void deleteById(int id) throws GoodsInSoldException;
 
     /**
      * 查询所有检查组
+     *
      * @return
      */
     List<CheckGroup> findAll();
+
+
+    /**
+     * 获取被关联的检查组的所有id
+     *
+     * @return
+     */
+    Set<String> findAllByCheckegroupToIds();
+
 }

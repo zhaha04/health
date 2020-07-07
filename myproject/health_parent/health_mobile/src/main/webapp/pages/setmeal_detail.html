@@ -16,7 +16,7 @@
     <script>
         // 获取了套餐的id, 静态传参, 没有经过后台服务，只js读取location
         var id = getUrlParam("id");
-        alert(id);
+        //alert(id);
     </script>
 </head>
 <body data-spy="scroll" data-target="#myNavbar" data-offset="150">
@@ -86,7 +86,7 @@
         },
         mounted(){
             // 获取套餐详情信息
-            axios.get("/setmeal/findDetailById3.do?id=" + id).then((response) => {
+            axios.get("/setmeal/findDetailById.do?id=" + id).then((response) => {
                 if(response.data.flag){
                     this.setmeal = response.data.data;
                 }
