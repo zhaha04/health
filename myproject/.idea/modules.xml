@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/health_parent/springsecurity_demo/src/main/main.iml" filepath="$PROJECT_DIR$/health_parent/springsecurity_demo/src/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_parent/health_interface/src/main/main1.iml" filepath="$PROJECT_DIR$/health_parent/health_interface/src/main/main1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_parent/health_common/src/main/main2.iml" filepath="$PROJECT_DIR$/health_parent/health_common/src/main/main2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_parent/health_mobile/src/main/main3.iml" filepath="$PROJECT_DIR$/health_parent/health_mobile/src/main/main3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_parent/health_jobs/src/main/main4.iml" filepath="$PROJECT_DIR$/health_parent/health_jobs/src/main/main4.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_parent/health_web/src/main/main5.iml" filepath="$PROJECT_DIR$/health_parent/health_web/src/main/main5.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_parent/health_service/src/main/main6.iml" filepath="$PROJECT_DIR$/health_parent/health_service/src/main/main6.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_parent/health_dao/src/main/main7.iml" filepath="$PROJECT_DIR$/health_parent/health_dao/src/main/main7.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_parent/health_pojo/src/main/main8.iml" filepath="$PROJECT_DIR$/health_parent/health_pojo/src/main/main8.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_parent/health_service/src/test/test.iml" filepath="$PROJECT_DIR$/health_parent/health_service/src/test/test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/health_parent/health_common/src/test/test1.iml" filepath="$PROJECT_DIR$/health_parent/health_common/src/test/test1.iml" />
+    </modules>
+  </component>
+</project>

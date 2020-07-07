@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itheima.health.dao.ClearOrderSettingDao">
+
+    <!--月份大于1, 则删除(月份-1)预约设置历史数据-->
+    <delete id="clearOrderSettingBetweenDate">
+        DELETE FROM t_ordersetting WHERE orderDate BETWEEN #{startDate} and #{endDate};
+    </delete>
+
+
+    <delete id="clearOrderSettingByMonth">
+        DELETE FROM t_ordersetting WHERE orderDate BETWEEN #{startDate} and #{endDate};
+    </delete>
+
+    <!--月份等于1, 则删除上一年12月份预约设置历史数据-->
+
+</mapper>

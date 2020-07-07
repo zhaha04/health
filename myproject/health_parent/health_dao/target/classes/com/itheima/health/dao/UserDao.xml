@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itheima.health.dao.UserDao">
+    
+    <!--通过用户名查询用户-->
+    <select id="findByUsername" parameterType="String" resultMap="userRolePermissionMap">
+        select 
+          u.id,
+          u.username,
+          u.password,
+          ur.role_id, 
+          r.keyword role_keyword, 
+          r.name role_name,
+          rp.permission_id, 
+          p.keyword permission_keyword, 
+          p.name permission_name
+        From
+            t_user u, 
+            t_user_role ur, 
+            t_role r,
+            t_role_permission rp, 
+            t_permission p
+        where 
+          u.id=ur.user_id 
+          and ur.role_id=r.id
+          and r.id=rp.role_id 
+          and rp.permission_id=p.id
+          and u.username=#{username}
+    </select>
+    <resultMap id="userRolePermissionMap" type="User">
+        <id property="id" column="id"></id>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <collection property="roles" ofType="Role">
+            <id property="id" column="role_id"/>
+            <result property="keyword" column="role_keyword"/>
+            <result property="name" column="role_name"/>
+            <collection property="permissions" ofType="Permission">
+                <id property="id" column="permission_id"/>
+                <result property="keyword" column="permission_keyword"/>
+                <result property="name" column="permission_name"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <!--条件查询用户-->
+    <select id="findUserByCondition" parameterType="String" resultMap="userMap">
+        SELECT
+          u.`id`,
+          u.`birthday`,
+          u.gender,
+          u.`username`,
+          u.`remark`,
+          u.`station`,
+          u.`telephone`,
+          ur.role_id,
+          r.`name` as role_name
+        FROM
+          t_user u 
+          left join t_user_role ur
+            on u.`id`=ur.`user_id`
+          left join t_role r
+            on r.`id`=ur.`role_id`        
+          <if test="_parameter != null and _parameter.length > 0">
+              where
+                u.`telephone` like #{queryString}
+                or u.username like #{queryString}
+          </if>
+        order by u.id
+    </select>
+    <resultMap id="userMap" type="user">
+        <id property="id" column="id"/>
+        <result property="birthday" column="birthday"/>
+        <result property="gender" column="gender"/>
+        <result property="username" column="username"/>
+        <result property="remark" column="remark"/>
+        <result property="station" column="station"/>
+        <result property="telephone" column="telephone"/>
+        <collection property="roles" ofType="Role">
+            <result property="name" column="role_name"/>
+        </collection>
+    </resultMap>
+    
+    <!--删除用户角色表中的对应用户-->
+    <delete id="deleteUserRoleById" parameterType="int">
+        delete 
+        from 
+          t_user_role
+        where 
+          user_id = #{id}
+    </delete>
+    
+    <!--删除用户表中的对应用户-->
+    <delete id="deleteUserById" parameterType="int">
+        delete 
+        from 
+          t_user
+        where 
+          id = #{id}
+    </delete>
+    
+    <!--添加空用户-->
+    <insert id="addUser" parameterType="user">
+        <selectKey resultType="int" keyProperty="id" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+        insert 
+          into t_user 
+            (birthday,gender,username,password,remark,station,telephone)
+          values
+            (#{birthday},#{gender},#{username},#{password},#{remark},#{station},#{telephone}) 
+    </insert>
+    
+    <!--绑定用户角色的关系-->
+    <insert id="addUserRole" parameterType="int">
+        insert 
+          into t_user_role
+            (user_id,role_id)
+          values
+            (#{userId},#{roleId})
+    </insert>
+</mapper>
