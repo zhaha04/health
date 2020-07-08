@@ -27,6 +27,7 @@ public interface MessageConstant {
     static final String UPLOAD_SUCCESS = "上传成功";
     static final String ADD_CHECKGROUP_FAIL = "新增检查组失败";
     static final String CHECKGROUP_IN_USE = "此检查组已经被套餐使用了，不能删除";
+
     static final String ADD_CHECKGROUP_SUCCESS = "新增检查组成功";
     static final String DELETE_CHECKGROUP_FAIL = "删除检查组失败";
     static final String DELETE_CHECKGROUP_SUCCESS = "删除检查组成功";
@@ -83,6 +84,8 @@ public interface MessageConstant {
     static final String GET_SETMEAL_LIST_FAIL = "查询套餐列表数据失败";
     static final String QUERY_USER_BY_PAGE_SUCCESS = "分页查询用户成功";
     static final String QUERY_USER_BY_PAGE_FAIL = "分页查询用户失败";
+    static final String GET_MEMBER_NUMBER_SEX_SUCCESS = "获取会员性别数据成功";
+    static final String GET_MEMBER_NUMBER_Age_SUCCESS = "获取会员年龄段数据成功";
     static final String DELETE_USER_SUCCESS = "删除用户成功";
     static final String DELETE_USER_FAIL = "删除用户失败";
     static final String QUERY_ROLE_SUCCESS = "查询角色成功";
