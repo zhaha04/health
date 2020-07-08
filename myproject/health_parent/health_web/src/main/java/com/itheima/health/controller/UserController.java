@@ -96,4 +96,16 @@ public class UserController {
         List<Integer> roleIds = userService.findRoleIdsByUserId(id);
         return new Result(true,MessageConstant.QUERY_ROLE_SUCCESS,roleIds);
     }
+
+    /**
+     * 修改用户
+     */
+    @PostMapping("/updateUser")
+    public Result updateUser(@RequestBody User user,Integer[] roleIds){
+        
+        //调用业务修改
+        userService.updateUser(user,roleIds);
+        
+        return new Result(true,MessageConstant.UPDATE_USER_SUCCESS);
+    }
 }

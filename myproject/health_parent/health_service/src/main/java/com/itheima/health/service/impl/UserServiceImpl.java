@@ -103,4 +103,23 @@ public class UserServiceImpl implements UserService {
     public User findUserById(int id) {
         return userDao.findUserById(id);
     }
+
+    /**
+     * 修改用户
+     */
+    @Override
+    @Transactional
+    public void updateUser(User user, Integer[] roleIds) {
+        
+        //更新用户基本信息
+        userDao.updateUser(user);
+        
+        //删除旧的用户角色信息
+        userDao.deleteUserRoleById(user.getId());
+        //添加新的用户角色信息
+        for (Integer roleId : roleIds){
+            
+            userDao.addUserRole(user.getId(),roleId);
+        }
+    }
 }

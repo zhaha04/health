@@ -47,7 +47,7 @@
     </resultMap>
 
     <!--条件查询用户-->
-    <select id="findUserByCondition" parameterType="String" resultMap="userMap">
+    <select id="findUserByCondition" parameterType="String" resultType="User">
         SELECT
           u.`id`,
           u.`birthday`,
@@ -65,18 +65,6 @@
           </if>
         order by u.id
     </select>
-    <resultMap id="userMap" type="user">
-        <id property="id" column="id"/>
-        <result property="birthday" column="birthday"/>
-        <result property="gender" column="gender"/>
-        <result property="username" column="username"/>
-        <result property="remark" column="remark"/>
-        <result property="station" column="station"/>
-        <result property="telephone" column="telephone"/>
-        <collection property="roles" ofType="Role">
-            <result property="name" column="role_name"/>
-        </collection>
-    </resultMap>
     
     <!--删除用户角色表中的对应用户-->
     <delete id="deleteUserRoleById" parameterType="int">
@@ -136,4 +124,20 @@
         where 
           user_id = #{id}
     </select>
+    
+    <!--更新用户基本信息-->
+    <update id="updateUser" parameterType="User">
+        update 
+          t_user
+        set 
+          birthday=#{birthday},
+          gender=#{gender},
+          username=#{username},
+          password=#{password},
+          remark=#{remark},
+          station=#{station},
+          telephone=#{telephone}
+        where 
+          id =#{id}
+    </update>
 </mapper>

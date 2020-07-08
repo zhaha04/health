@@ -18,7 +18,7 @@ public interface UserService {
     
     
     /**
-     * 根据登陆用户名称查询用户权限信息
+     * 根据用户名查询用户权限信息
      * @param username
      * @return
      */
@@ -43,4 +43,9 @@ public interface UserService {
      * 通过id查询用户
      */
     User findUserById(int id);
+
+    /**
+     * 修改用户
+     */
+    void updateUser(User user,Integer[] roleIds);
 }

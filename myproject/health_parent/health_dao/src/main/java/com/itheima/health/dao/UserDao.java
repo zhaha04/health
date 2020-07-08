@@ -53,4 +53,9 @@ public interface UserDao {
      * 通过ID查询用户
      */
     User findUserById(int id);
+
+    /**
+     * 更新用户
+     */
+    void updateUser(User user);
 }
