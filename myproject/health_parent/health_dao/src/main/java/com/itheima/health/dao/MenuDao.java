@@ -37,4 +37,14 @@ public interface MenuDao {
      * 删除菜单
      */
     void deleteMenuById(int id);
+
+    /**
+     * 根据ID查询菜单
+     */
+    Menu findMenuById(int id);
+
+    /**
+     * 根据ID查询菜单拥有的角色ID
+     */
+    List<Integer> findRoleIdsByMenuId(int id);
 }

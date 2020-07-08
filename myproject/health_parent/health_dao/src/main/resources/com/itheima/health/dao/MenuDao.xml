@@ -74,4 +74,24 @@
         where 
           id = #{id}
     </delete>
+
+    <!--通过ID查询用户-->
+    <select id="findMenuById" parameterType="int" resultType="Menu">
+        select 
+          *
+        from 
+          t_menu
+        where 
+          id = #{id}
+    </select>
+
+    <!--通过用户ID查询角色ID-->
+    <select id="findRoleIdsByMenuId" parameterType="int" resultType="int">
+        select 
+          role_id
+        from 
+          t_role_menu
+        where 
+          menu_id = #{id}
+    </select>
 </mapper>

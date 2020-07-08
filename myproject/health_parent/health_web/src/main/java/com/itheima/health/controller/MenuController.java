@@ -42,6 +42,29 @@ public class MenuController {
     }
 
     /**
+     * 通过id不分页获取菜单信息
+     */
+    @GetMapping("/findMenuById")
+    public Result findMenuById(int id){
+
+        //调用服务
+        Menu menu = menuService.findMenuById(id);
+
+        //返回
+        return new Result(true,MessageConstant.QUERY_MENU_SUCCESS,menu);
+    }
+
+    /**
+     * 通过菜单ID查询所有的角色ID
+     */
+    @GetMapping("/findRoleIdsByMenuId")
+    public Result findRoleIdsByMenuId(int id){
+
+        List<Integer> roleIds = menuService.findRoleIdsByMenuId(id);
+        return new Result(true,MessageConstant.QUERY_ROLE_SUCCESS,roleIds);
+    }
+
+    /**
      * 添加菜单，同时添加角色信息
      */
     @PostMapping("/addMenu")
