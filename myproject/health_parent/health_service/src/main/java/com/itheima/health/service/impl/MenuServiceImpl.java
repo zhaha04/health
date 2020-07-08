@@ -51,6 +51,14 @@ public class MenuServiceImpl implements MenuService {
     }
 
     /**
+     * 根据名称查询
+     */
+    @Override
+    public Menu findMenuByMenuName(String menuName) {
+        return menuDao.findMenuByMenuName(menuName);
+    }
+    
+    /**
      * 添加菜单
      */
     @Override
@@ -103,5 +111,23 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<Integer> findRoleIdsByMenuId(int id) {
         return menuDao.findRoleIdsByMenuId(id);
+    }
+
+    /**
+     * 修改菜单
+     */
+    @Override
+    public void updateMenu(Menu menu, Integer[] roleIds) {
+
+        //更新用户基本信息
+        menuDao.updateMenu(menu);
+
+        //删除旧的用户角色信息
+        menuDao.deleteMenuRoleById(menu.getId());
+        //添加新的用户角色信息
+        for (Integer roleId : roleIds){
+
+            menuDao.addMenuRole(menu.getId(),roleId);
+        }
     }
 }

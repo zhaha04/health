@@ -9,6 +9,11 @@ import java.util.List;
 public interface MenuService {
 
     /**
+     * 根据名称查询
+     */
+    Menu findMenuByMenuName(String MenuName);
+
+    /**
      * 分页查询菜单
      */
     PageResult<Menu> findMenuByPage(QueryPageBean queryPageBean);
@@ -37,4 +42,9 @@ public interface MenuService {
      * 通过菜单ID查询所拥有的角色ID
      */
     List<Integer> findRoleIdsByMenuId(int id);
+
+    /**
+     * 修改菜单
+     */
+    void updateMenu(Menu menu,Integer[] roleIds);
 }

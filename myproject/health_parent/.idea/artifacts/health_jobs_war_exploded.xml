@@ -7,8 +7,15 @@
           <element id="module-output" name="health_jobs" />
         </element>
         <element id="directory" name="lib">
-          <element id="archive" name="health_interface-1.0-SNAPSHOT.jar">
-            <element id="module-output" name="health_interface" />
+          <element id="library" level="project" name="Maven: org.quartz-scheduler:quartz:2.2.1" />
+          <element id="library" level="project" name="Maven: c3p0:c3p0:0.9.1.1" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.6.6" />
+          <element id="library" level="project" name="Maven: org.quartz-scheduler:quartz-jobs:2.2.1" />
+          <element id="archive" name="health_service-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="health_service" />
+          </element>
+          <element id="archive" name="health_dao-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="health_dao" />
           </element>
           <element id="archive" name="health_pojo-1.0-SNAPSHOT.jar">
             <element id="module-output" name="health_pojo" />
@@ -84,7 +91,6 @@
           <element id="library" level="project" name="Maven: org.bouncycastle:bctsp-jdk14:1.38" />
           <element id="library" level="project" name="Maven: org.bouncycastle:bcprov-jdk14:1.38" />
           <element id="library" level="project" name="Maven: org.bouncycastle:bcmail-jdk14:1.38" />
-          <element id="library" level="project" name="Maven: com.alpha:itextasian:1.0.0" />
           <element id="library" level="project" name="Maven: net.sf.jasperreports:jasperreports:6.8.0" />
           <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.9.3" />
           <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.2" />
@@ -100,10 +106,9 @@
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.9.8" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.8" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.8" />
-          <element id="library" level="project" name="Maven: org.quartz-scheduler:quartz:2.2.1" />
-          <element id="library" level="project" name="Maven: c3p0:c3p0:0.9.1.1" />
-          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.6.6" />
-          <element id="library" level="project" name="Maven: org.quartz-scheduler:quartz-jobs:2.2.1" />
+          <element id="archive" name="health_interface-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="health_interface" />
+          </element>
         </element>
       </element>
       <element id="directory" name="META-INF">

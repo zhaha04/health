@@ -121,10 +121,10 @@
                     <template>
                         <el-tabs v-model="activeName" type="card">
                             <el-tab-pane label="基本信息" name="first">
-                                <el-form label-position="right" label-width="100px">
+                                <el-form :rules="rules" label-position="right" label-width="100px">
                                     <el-row>
                                         <el-col :span="12">
-                                            <el-form-item label="菜单名称">
+                                            <el-form-item label="菜单名称" prop="name">
                                                 <el-input v-model="formData.name"/>
                                             </el-form-item>
                                         </el-col>
@@ -337,7 +337,10 @@
             roleIds: [],//添加表单窗口中角色复选框对应id
             checkgroupIds: [],//添加表单窗口中检查组复选框对应id
             dialogFormVisible: false,//控制添加窗口显示/隐藏
-            dialogFormVisible4Edit: false //控制编辑窗口显示/隐藏
+            dialogFormVisible4Edit: false, //控制编辑窗口显示/隐藏
+            rules: {//校验规则
+                name: [{required: true, message: '名称为必填项', trigger: 'blur'}]
+            }
         },
         created() {
             this.findPage();
@@ -477,7 +480,7 @@
             // 编辑提交
             handleEdit() {
                 //提交检查组信息this.formData, 选中的检查项id this.checkgroupIds
-                axios.post('/setmeal/update.do?checkgroupIds=' + this.checkgroupIds, this.formData).then(res => {
+                axios.post('/menu/updateMenu.do?roleIds=' + this.roleIds, this.formData).then(res => {
                     this.$message({
                         message: res.data.message,
                         type: res.data.flag ? "success" : "error"

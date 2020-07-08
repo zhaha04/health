@@ -17,7 +17,7 @@ public interface UserDao {
     List<Integer> findRoleIdsByUserId(int id);
 
     /**
-     * 根据登陆用户名称查询用户权限信息
+     * 根据名称查询
      * @param username
      * @return
      */

@@ -47,4 +47,14 @@ public interface MenuDao {
      * 根据ID查询菜单拥有的角色ID
      */
     List<Integer> findRoleIdsByMenuId(int id);
+
+    /**
+     * 根据名称查询
+     */
+    Menu findMenuByMenuName(String menuName);
+    
+    /**
+     * 更新用户
+     */
+    void updateMenu(Menu menu);
 }

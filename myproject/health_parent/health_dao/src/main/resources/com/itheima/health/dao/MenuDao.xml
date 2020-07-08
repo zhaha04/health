@@ -94,4 +94,30 @@
         where 
           menu_id = #{id}
     </select>
+
+    <!--更新用户基本信息-->
+    <update id="updateMenu" parameterType="Menu">
+        update 
+          t_menu
+        set 
+          name=#{name},
+          linkUrl=#{linkUrl},
+          path=#{path},
+          priority=#{priority},
+          icon=#{icon},
+          description=#{description},
+          parentMenuId=#{parentMenuId}
+        where 
+          id =#{id}
+    </update>
+
+    <!--通过名称查询-->
+    <select id="findMenuByMenuName" parameterType="String" resultType="Menu">
+        select 
+          *
+        From
+            t_menu
+        where 
+          name = #{menuName}
+    </select>
 </mapper>

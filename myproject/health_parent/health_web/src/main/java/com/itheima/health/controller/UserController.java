@@ -80,11 +80,18 @@ public class UserController {
     @PostMapping("/addUser")
     public Result addUser(@RequestBody User user,Integer[] roleIds){
         
-        //调用服务
-        userService.addUser(user,roleIds);
+        //查询
+        User userInDB = userService.findByUsername(user.getUsername());
         
-        //返回结果
-        return new Result(true,MessageConstant.ADD_USER_SUCCESS);
+        if (null == userInDB){
+            //调用服务
+            userService.addUser(user,roleIds);
+
+            //返回结果
+            return new Result(true,MessageConstant.ADD_USER_SUCCESS);
+        } else {
+            return new Result(false,"用户名已被占用！");
+        }
     }
 
     /**

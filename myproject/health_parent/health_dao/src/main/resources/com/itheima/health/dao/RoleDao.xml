@@ -5,7 +5,81 @@
 
 <mapper namespace="com.itheima.health.dao.RoleDao">
     
+    <!--查询所有角色-->
     <select id="findAllRole" resultType="role">
         select * from t_role
+    </select>
+
+    <!--条件查询-->
+    <select id="findRoleByCondition" parameterType="String" resultType="Role">
+        SELECT
+        r.`id`,
+        r.`name`,
+        r.keyword,
+        r.`description`
+        FROM
+        t_role r
+        <if test="_parameter != null and _parameter.length > 0">
+            where
+            r.`name` like #{queryString}
+            or r.keyword like #{queryString}
+        </if>
+        order by r.id
+    </select>
+
+    <!--删除-->
+    <delete id="deleteRoleById" parameterType="int">
+        delete 
+        from 
+          t_role
+        where 
+          id = #{id}
+    </delete>
+
+    <!--添加-->
+    <insert id="addRole" parameterType="Role">
+        <selectKey resultType="int" keyProperty="id" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+        insert
+        into t_role
+        (name,keyword,description)
+        values
+        (#{name},#{keyword},#{description})
+    </insert>
+
+    <!--通过ID查询-->
+    <select id="findRoleById" parameterType="int" resultType="Role">
+        select 
+          *
+        from 
+          t_role
+        where 
+          id = #{id}
+    </select>
+
+    <!--更新-->
+    <update id="updateRole" parameterType="Role">
+        update 
+          t_role
+        set 
+          name=#{name},
+          keyword=#{keyword},
+          description=#{description}
+        where 
+          id =#{id}
+    </update>
+
+    <!--通过名称查询-->
+    <select id="findRoleByRoleName" parameterType="String" resultType="Role">
+        select 
+          r.id,
+          r.name,
+          r.keyword,
+          r.description
+        From
+            t_role r
+        where 
+          r.name = #{roleName}
     </select>
 </mapper>

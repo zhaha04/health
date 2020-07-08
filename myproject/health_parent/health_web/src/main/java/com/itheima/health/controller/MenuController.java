@@ -70,11 +70,18 @@ public class MenuController {
     @PostMapping("/addMenu")
     public Result addMenu(@RequestBody Menu menu,Integer[] roleIds){
 
-        //调用服务
-        menuService.addMenu(menu,roleIds);
+        //查询
+        Menu menuInDB = menuService.findMenuByMenuName(menu.getName());
 
-        //返回结果
-        return new Result(true,MessageConstant.ADD_MENU_SUCCESS);
+        if (null == menuInDB){
+            //调用服务
+            menuService.addMenu(menu,roleIds);
+
+            //返回结果
+            return new Result(true,MessageConstant.ADD_MENU_SUCCESS);
+        } else {
+            return new Result(false,"该名称已被占用！");
+        }
     }
 
     /**
@@ -88,5 +95,17 @@ public class MenuController {
         
         //返回
         return new Result(true,MessageConstant.DELETE_MENU_SUCCESS);
+    }
+
+    /**
+     * 修改用户
+     */
+    @RequestMapping("/updateMenu")
+    public Result updateMenu(@RequestBody Menu menu,Integer[] roleIds){
+
+        //调用业务修改
+        menuService.updateMenu(menu,roleIds);
+
+        return new Result(true,MessageConstant.UPDATE_MENU_SUCCESS);
     }
 }

@@ -76,7 +76,6 @@
           <element id="library" level="project" name="Maven: org.bouncycastle:bctsp-jdk14:1.38" />
           <element id="library" level="project" name="Maven: org.bouncycastle:bcprov-jdk14:1.38" />
           <element id="library" level="project" name="Maven: org.bouncycastle:bcmail-jdk14:1.38" />
-          <element id="library" level="project" name="Maven: com.alpha:itextasian:1.0.0" />
           <element id="library" level="project" name="Maven: net.sf.jasperreports:jasperreports:6.8.0" />
           <element id="library" level="project" name="Maven: commons-digester:commons-digester:2.1" />
           <element id="library" level="project" name="Maven: org.jfree:jcommon:1.0.23" />

@@ -124,10 +124,10 @@
                     <template>
                         <el-tabs v-model="activeName" type="card">
                             <el-tab-pane label="基本信息" name="first">
-                                <el-form label-position="right" label-width="100px">
+                                <el-form :rules="rules" label-position="right" label-width="100px">
                                     <el-row>
                                         <el-col :span="12">
-                                            <el-form-item label="用户名">
+                                            <el-form-item label="用户名" prop="name">
                                                 <el-input v-model="formData.username"/>
                                             </el-form-item>
                                         </el-col>
@@ -356,7 +356,10 @@
             formData: {},//表单数据
             tableData: [],//添加表单窗口中检查组列表数据
             dialogFormVisible: false,//控制添加窗口显示/隐藏
-            dialogFormVisible4Edit: false //控制编辑窗口显示/隐藏
+            dialogFormVisible4Edit: false, //控制编辑窗口显示/隐藏
+            rules: {//校验规则
+                name: [{required: true, message: '名称为必填项', trigger: 'blur'}]
+            }
         },
         created() {
             this.findPage();
@@ -413,6 +416,8 @@
                         this.dialogFormVisible = false;
                         // 刷新列表数据
                         this.findPage();
+                    } else {
+                        this.$message.error(res.data.message);
                     }
                 })
             },
