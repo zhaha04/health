@@ -72,10 +72,10 @@
 <body class="hold-transition">
 <div id="app">
     <div class="content-header">
-        <h1>工作台<small>用户管理</small></h1>
+        <h1>系统设置<small>用户管理</small></h1>
         <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>工作台</el-breadcrumb-item>
+            <el-breadcrumb-item>系统设置</el-breadcrumb-item>
             <el-breadcrumb-item>用户管理</el-breadcrumb-item>
         </el-breadcrumb>
     </div>
@@ -85,7 +85,7 @@
                 <el-input placeholder="用户名 / 手机号" v-model="pagination.queryString" style="width: 200px;"
                           class="filter-item" @keyup.enter.native="handleFilter"></el-input>
                 <el-button @click="handleCurrentChange(1)" class="dalfBut">查询</el-button>
-                <el-button type="primary" class="butT" @click="handleCreate()">添加</el-button>
+                <el-button type="primary" class="butT" @click="handleCreate()">新建</el-button>
             </div>
             <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
                 <el-table-column type="index" align="center" label="序号" width="100px"></el-table-column>
@@ -229,103 +229,97 @@
             
             <!--编辑用户弹窗-->
             <div class="edit-form">
-                <el-dialog title="编辑套餐" :visible.sync="dialogFormVisible4Edit">
+                <el-dialog title="编辑套用户" :visible.sync="dialogFormVisible4Edit">
                     <template>
                         <el-tabs v-model="activeName" type="card">
                             <el-tab-pane label="基本信息" name="first">
                                 <el-form label-position="right" label-width="100px">
                                     <el-row>
                                         <el-col :span="12">
-                                            <el-form-item label="编码">
-                                                <el-input v-model="formData.code"/>
-                                            </el-form-item>
-                                        </el-col>
-                                        <el-col :span="12">
-                                            <el-form-item label="名称">
-                                                <el-input v-model="formData.name"/>
+                                            <el-form-item label="用户名">
+                                                <el-input v-model="formData.username"/>
                                             </el-form-item>
                                         </el-col>
                                     </el-row>
                                     <el-row>
                                         <el-col :span="12">
-                                            <el-form-item label="适用性别">
-                                                <el-select v-model="formData.sex">
-                                                    <el-option label="不限" value="0"></el-option>
+                                            <el-form-item label="密码">
+                                                <el-input v-model="formData.password"/>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-form-item label="确认密码">
+                                                <el-input/>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="12">
+                                            <el-form-item label="性别">
+                                                <el-select v-model="formData.gender">
+                                                    <el-option label="LGBT" value="0"></el-option>
                                                     <el-option label="男" value="1"></el-option>
                                                     <el-option label="女" value="2"></el-option>
                                                 </el-select>
                                             </el-form-item>
                                         </el-col>
                                         <el-col :span="12">
-                                            <el-form-item label="助记码">
-                                                <el-input v-model="formData.helpCode"/>
+                                            <el-form-item label="手机号">
+                                                <el-input v-model="formData.telephone"/>
                                             </el-form-item>
                                         </el-col>
                                     </el-row>
                                     <el-row>
                                         <el-col :span="12">
-                                            <el-form-item label="套餐价格">
-                                                <el-input v-model="formData.price"/>
+                                            <el-form-item label="生日">
+                                                <el-date-picker
+                                                        v-model="formData.birthday"
+                                                        type="date"
+                                                        format="yyyy-MM-dd"
+                                                        value-format="yyyy-MM-dd"
+                                                        placeholder="请选择生日"
+                                                />
                                             </el-form-item>
                                         </el-col>
                                         <el-col :span="12">
-                                            <el-form-item label="适用年龄">
-                                                <el-input v-model="formData.age"/>
+                                            <el-form-item label="状态">
+                                                <el-select v-model="formData.station">
+                                                    <el-option label="正常" value="0"></el-option>
+                                                    <el-option label="不正常" value="1"></el-option>
+                                                </el-select>
                                             </el-form-item>
                                         </el-col>
                                     </el-row>
                                     <el-row>
                                         <el-col :span="24">
-                                            <el-form-item label="上传图片">
-                                                <el-upload
-                                                        class="avatar-uploader"
-                                                        action="/setmeal/upload.do"
-                                                        :auto-upload="autoUpload"
-                                                        name="imgFile"
-                                                        :show-file-list="false"
-                                                        :on-success="handleAvatarSuccess"
-                                                        :before-upload="beforeAvatarUpload">
-                                                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                                </el-upload>
-                                            </el-form-item>
-                                        </el-col>
-                                    </el-row>
-                                    <el-row>
-                                        <el-col :span="24">
-                                            <el-form-item label="说明">
+                                            <el-form-item label="备注">
                                                 <el-input v-model="formData.remark" type="textarea"></el-input>
-                                            </el-form-item>
-                                        </el-col>
-                                    </el-row>
-                                    <el-row>
-                                        <el-col :span="24">
-                                            <el-form-item label="注意事项">
-                                                <el-input v-model="formData.attention" type="textarea"></el-input>
                                             </el-form-item>
                                         </el-col>
                                     </el-row>
                                 </el-form>
                             </el-tab-pane>
-                            <el-tab-pane label="检查组信息" name="second">
+                            <el-tab-pane label="角色信息" name="second">
                                 <div class="checkScrol">
                                     <table class="datatable">
                                         <thead>
                                         <tr>
                                             <th>选择</th>
-                                            <th>项目编码</th>
-                                            <th>项目名称</th>
-                                            <th>项目说明</th>
+                                            <th>角色ID</th>
+                                            <th>角色名称</th>
+                                            <th>助记码</th>
+                                            <th>描述</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr v-for="c in tableData">
+                                        <tr v-for="role in tableData">
                                             <td>
-                                                <input :id="c.id" v-model="checkgroupIds" type="checkbox" :value="c.id">
+                                                <input :id="role.id" v-model="roleIds" type="checkbox" :value="role.id">
                                             </td>
-                                            <td><label :for="c.id">{{c.code}}</label></td>
-                                            <td><label :for="c.id">{{c.name}}</label></td>
-                                            <td><label :for="c.id">{{c.remark}}</label></td>
+                                            <td width="100px"><label :for="role.id">{{role.id}}</label></td>
+                                            <td width="150px"><label :for="role.id">{{role.name}}</label></td>
+                                            <td width="200px"><label :for="role.id">{{role.keyword}}</label></td>
+                                            <td><label :for="role.id">{{role.description}}</label></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -469,20 +463,20 @@
                 this.dialogFormVisible4Edit = true;
                 // 套餐的id
                 var id = row.id;
-                axios.get("/setmeal/findById.do?id=" + id).then(res => {
+                axios.get("/user/findUserById.do?id=" + id).then(res => {
                     if (res.data.flag) {
                         // 回显套餐信息
                         // res.data.data => resultMap {setmeal, imageUrl}
-                        this.formData = res.data.data.setmeal;
+                        this.formData = res.data.data;
                         // 回显图片
-                        this.imageUrl = res.data.data.imageUrl;
-                        axios.get('/checkgroup/findAll.do').then(resp => {
+                        //this.imageUrl = res.data.data.imageUrl;
+                        axios.get('/role/findAllRole.do').then(resp => {
                             if (resp.data.flag) {
                                 this.tableData = resp.data.data;
-                                // 获取选中的检查组id
-                                axios.get('/setmeal/findCheckgroupIdsBySetmealId.do?id=' + id).then(response => {
+                                // 获取选中的角色id
+                                axios.get('/user/findRoleIdsByUserId.do?id=' + id).then(response => {
                                     if (response.data.flag) {
-                                        this.checkgroupIds = response.data.data;
+                                        this.roleIds = response.data.data;
                                     } else {
                                         this.$message.error(response.data.message);
                                     }
@@ -499,7 +493,7 @@
             // 编辑提交
             handleEdit() {
                 //提交检查组信息this.formData, 选中的检查项id this.checkgroupIds
-                axios.post('/setmeal/update.do?checkgroupIds=' + this.checkgroupIds, this.formData).then(res => {
+                axios.post('/user/updateUser.do?roleIds=' + this.roleIds, this.formData).then(res => {
                     this.$message({
                         message: res.data.message,
                         type: res.data.flag ? "success" : "error"

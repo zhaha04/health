@@ -4,11 +4,19 @@ import com.github.pagehelper.Page;
 import com.itheima.health.pojo.User;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * Description: No Description
  * User: Eric
  */
 public interface UserDao {
+
+    /**
+     * 通过用户ID查询拥有的角色ID
+     */
+    List<Integer> findRoleIdsByUserId(int id);
+
     /**
      * 根据登陆用户名称查询用户权限信息
      * @param username
@@ -40,4 +48,14 @@ public interface UserDao {
      * 绑定用户与角色的关系
      */
     void addUserRole(@Param("userId") Integer userId,@Param("roleId") Integer roleId);
+
+    /**
+     * 通过ID查询用户
+     */
+    User findUserById(int id);
+
+    /**
+     * 更新用户
+     */
+    void updateUser(User user);
 }

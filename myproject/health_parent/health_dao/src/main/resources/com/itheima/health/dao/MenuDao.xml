@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.itheima.health.dao.MenuDao">
+    
+    <!--条件查询菜单-->
+    <select id="findMenuByCondition" parameterType="String" resultType="Menu">
+        SELECT
+          m.`id`,
+          m.`name`,
+          m.`linkUrl`,
+          m.`path`,
+          m.`priority`,
+          m.`icon`,
+          m.`description`,
+          m.`parentMenuId`
+        FROM
+          t_menu m
+        <if test="_parameter != null and _parameter.length > 0">
+            where
+              m.`name` like #{queryString}
+        </if>
+        ORDER BY 
+          m.id
+    </select>
+    
+    <!--查询子菜单-->
+    <select id="findChildMenu" resultType="Menu">
+        select 
+          *
+        from 
+          t_menu
+        where 
+          path like '/%'
+          or path = null
+    </select>
+    
+    <!--添加无角色关系的菜单-->
+    <insert id="addMenu" parameterType="Menu">
+        <selectKey resultType="int" keyProperty="id" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+        insert
+        into t_menu
+          (name,linkUrl,path,priority,icon,description,parentMenuId)
+        values
+          (#{name},#{linkUrl},#{path},#{priority},#{icon},#{description},#{parentMenuId})
+    </insert>
+    
+    <!--绑定菜单与角色的关系-->
+    <insert id="addMenuRole" parameterType="int">
+        insert 
+          into t_role_menu
+            (menu_id,role_id)
+          values
+            (#{menuId},#{roleId})
+    </insert>
+
+    <!--删除菜单角色表中的对应菜单-->
+    <delete id="deleteMenuRoleById" parameterType="int">
+        delete 
+        from 
+          t_role_menu
+        where 
+          menu_id = #{id}
+    </delete>
+
+    <!--删除菜单表中的对应菜单-->
+    <delete id="deleteMenuById" parameterType="int">
+        delete 
+        from 
+          t_menu
+        where 
+          id = #{id}
+    </delete>
+</mapper>

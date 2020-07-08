@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import com.github.pagehelper.Page;
 
+import java.util.List;
+
 /**
  * Description: No Description
  * User: Eric
@@ -21,6 +23,14 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+
+    /**
+     * 通过用户ID查询拥有的角色ID
+     */
+    @Override
+    public List<Integer> findRoleIdsByUserId(int id) {
+        return userDao.findRoleIdsByUserId(id);
+    }
 
     /**
      * 根据登陆用户名称查询用户权限信息
@@ -46,7 +56,7 @@ public class UserServiceImpl implements UserService {
         }
         // 条件查询，这个查询语句会被分页
         Page<User> page = userDao.findUserByCondition(queryPageBean.getQueryString());
-        return new PageResult<User>((long)page.getResult().size(), page.getResult());
+        return new PageResult<User>(page.getTotal(), page.getResult());
         
     }
 
@@ -83,6 +93,33 @@ public class UserServiceImpl implements UserService {
                 
                 userDao.addUserRole(userId,roleId);
             }
+        }
+    }
+
+    /**
+     * 通过ID查询用户
+     */
+    @Override
+    public User findUserById(int id) {
+        return userDao.findUserById(id);
+    }
+
+    /**
+     * 修改用户
+     */
+    @Override
+    @Transactional
+    public void updateUser(User user, Integer[] roleIds) {
+        
+        //更新用户基本信息
+        userDao.updateUser(user);
+        
+        //删除旧的用户角色信息
+        userDao.deleteUserRoleById(user.getId());
+        //添加新的用户角色信息
+        for (Integer roleId : roleIds){
+            
+            userDao.addUserRole(user.getId(),roleId);
         }
     }
 }
