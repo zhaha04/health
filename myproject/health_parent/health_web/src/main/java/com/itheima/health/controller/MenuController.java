@@ -66,4 +66,17 @@ public class MenuController {
         //返回
         return new Result(true,MessageConstant.DELETE_MENU_SUCCESS);
     }
+
+
+    /**
+     * 查询菜单和子菜单
+     * @param loginUsername
+     * @return
+     */
+    @RequestMapping("/findByMenu")
+    public Result findByMenu(String loginUsername) {
+        List<Menu> menuList = menuService.findByMenu(loginUsername);
+
+        return new Result(true, "权限已更新",menuList);
+    }
 }

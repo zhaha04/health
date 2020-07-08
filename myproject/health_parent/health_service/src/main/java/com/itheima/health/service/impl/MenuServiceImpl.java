@@ -84,4 +84,15 @@ public class MenuServiceImpl implements MenuService {
         //删除用户表中的对应用户
         menuDao.deleteMenuById(id);
     }
+
+    /**
+     * 查询菜单和子菜单
+     * @param loginUsername
+     * @return
+     */
+    @Override
+    public List<Menu> findByMenu(String loginUsername) {
+        List<Menu> byMenu = menuDao.findByMenu(loginUsername);
+        return byMenu;
+    }
 }

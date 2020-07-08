@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.itheima.health.dao.UserDao;
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
+import com.itheima.health.pojo.Menu;
 import com.itheima.health.pojo.User;
 import com.itheima.health.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

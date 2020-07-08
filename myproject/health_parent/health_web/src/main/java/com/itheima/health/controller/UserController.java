@@ -10,7 +10,6 @@ import com.itheima.health.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    
+
     @Reference
     private UserService userService;
 
@@ -31,7 +30,7 @@ public class UserController {
     @GetMapping("/getLoginUsername")
     public Result getLoginUsername() {
         // 获取登陆用户的认证信息
-        User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         // 登陆用户名
         String username = loginUser.getUsername();
         // 返回给前端
@@ -42,15 +41,15 @@ public class UserController {
      * 通过id不分页获取用户信息
      */
     @GetMapping("/findUserById")
-    public Result findUserById(int id){
-        
+    public Result findUserById(int id) {
+
         //调用服务
         User user = userService.findUserById(id);
-        
+
         //返回
-        return new Result(true,MessageConstant.QUERY_USER_SUCCESS,user);
+        return new Result(true, MessageConstant.QUERY_USER_SUCCESS, user);
     }
-    
+
     /**
      * 通过id分页获取用户信息
      */
@@ -65,47 +64,48 @@ public class UserController {
      * 通过用户ID删除用户
      */
     @RequestMapping("/deleteUserById")
-    public Result deleteUserById(int id){
-        
+    public Result deleteUserById(int id) {
+
         //调用服务删除用户
         userService.deleteUserById(id);
-        
+
         //返回结果
-        return new Result(true,MessageConstant.DELETE_USER_SUCCESS);
+        return new Result(true, MessageConstant.DELETE_USER_SUCCESS);
     }
 
     /**
      * 添加用户，同时添加角色信息
      */
     @PostMapping("/addUser")
-    public Result addUser(@RequestBody User user,Integer[] roleIds){
-        
+    public Result addUser(@RequestBody User user, Integer[] roleIds) {
+
         //调用服务
-        userService.addUser(user,roleIds);
-        
+        userService.addUser(user, roleIds);
+
         //返回结果
-        return new Result(true,MessageConstant.ADD_USER_SUCCESS);
+        return new Result(true, MessageConstant.ADD_USER_SUCCESS);
     }
 
     /**
      * 通过用户ID查询所有的角色ID
      */
     @GetMapping("/findRoleIdsByUserId")
-    public Result findRoleIdsByUserId(int id){
+    public Result findRoleIdsByUserId(int id) {
 
         List<Integer> roleIds = userService.findRoleIdsByUserId(id);
-        return new Result(true,MessageConstant.QUERY_ROLE_SUCCESS,roleIds);
+        return new Result(true, MessageConstant.QUERY_ROLE_SUCCESS, roleIds);
     }
 
     /**
      * 修改用户
      */
     @PostMapping("/updateUser")
-    public Result updateUser(@RequestBody User user,Integer[] roleIds){
-        
+    public Result updateUser(@RequestBody User user, Integer[] roleIds) {
+
         //调用业务修改
-        userService.updateUser(user,roleIds);
-        
-        return new Result(true,MessageConstant.UPDATE_USER_SUCCESS);
+        userService.updateUser(user, roleIds);
+
+        return new Result(true, MessageConstant.UPDATE_USER_SUCCESS);
     }
+
 }

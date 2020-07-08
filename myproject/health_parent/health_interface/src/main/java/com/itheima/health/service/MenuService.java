@@ -27,4 +27,12 @@ public interface MenuService {
      * 删除菜单
      */
     void deleteMenuById(int id);
+
+
+    /**
+     * 查询菜单和子菜单
+     * @param loginUsername
+     * @return
+     */
+    List<Menu> findByMenu(String loginUsername);
 }

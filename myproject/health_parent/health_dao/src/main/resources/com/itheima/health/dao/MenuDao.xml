@@ -3,28 +3,28 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="com.itheima.health.dao.MenuDao">
-    
+
     <!--条件查询菜单-->
     <select id="findMenuByCondition" parameterType="String" resultType="Menu">
         SELECT
-          m.`id`,
-          m.`name`,
-          m.`linkUrl`,
-          m.`path`,
-          m.`priority`,
-          m.`icon`,
-          m.`description`,
-          m.`parentMenuId`
+        m.`id`,
+        m.`name`,
+        m.`linkUrl`,
+        m.`path`,
+        m.`priority`,
+        m.`icon`,
+        m.`description`,
+        m.`parentMenuId`
         FROM
-          t_menu m
+        t_menu m
         <if test="_parameter != null and _parameter.length > 0">
             where
-              m.`name` like #{queryString}
+            m.`name` like #{queryString}
         </if>
-        ORDER BY 
-          m.id
+        ORDER BY
+        m.id
     </select>
-    
+
     <!--查询子菜单-->
     <select id="findChildMenu" resultType="Menu">
         select 
@@ -35,7 +35,40 @@
           path like '/%'
           or path = null
     </select>
-    
+
+    <!--查询菜单和子菜单-->
+    <resultMap id="findByMenuMap" type="com.itheima.health.pojo.Menu">
+        <id property="id" column="fu_id"/>
+        <result property="path" column="fu_path"/>
+        <result property="name" column="fu_name"/>
+        <result property="icon" column="fu_icon"/>
+        <collection property="children" ofType="com.itheima.health.pojo.Menu">
+            <id property="id" column="zi_id"/>
+            <result property="path" column="zi_path"/>
+            <result property="name" column="zi_name"/>
+            <result property="linkUrl" column="zi_linkUrl"/>
+        </collection>
+    </resultMap>
+    <select id="findByMenu" resultType="com.itheima.health.pojo.Menu" resultMap="findByMenuMap">
+        SELECT
+            m.`id` AS fu_id,m.`path` AS fu_path,m.`name` AS fu_name,m.`icon` AS fu_icon,
+            mp.`id` AS zi_id,mp.`path` AS zi_path,mp.`name` AS zi_name,mp.`linkUrl` AS zi_linkUrl
+        FROM
+            t_user AS u,
+            t_user_role AS ur,
+            t_role AS r,
+            t_role_menu AS rm,
+            t_menu AS m,
+            t_menu AS mp
+        WHERE
+            u.`id`=ur.`user_id` AND
+            ur.`role_id`=r.`id` AND
+            r.`id`=rm.`role_id` AND
+            rm.`menu_id` = mp.`id` AND
+            m.`id` = mp.`parentMenuId` AND
+            u.`username` = #{loginUsername}
+    </select>
+
     <!--添加无角色关系的菜单-->
     <insert id="addMenu" parameterType="Menu">
         <selectKey resultType="int" keyProperty="id" order="AFTER">
@@ -43,11 +76,11 @@
         </selectKey>
         insert
         into t_menu
-          (name,linkUrl,path,priority,icon,description,parentMenuId)
+        (name,linkUrl,path,priority,icon,description,parentMenuId)
         values
-          (#{name},#{linkUrl},#{path},#{priority},#{icon},#{description},#{parentMenuId})
+        (#{name},#{linkUrl},#{path},#{priority},#{icon},#{description},#{parentMenuId})
     </insert>
-    
+
     <!--绑定菜单与角色的关系-->
     <insert id="addMenuRole" parameterType="int">
         insert 
