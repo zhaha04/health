@@ -47,10 +47,11 @@ public class ReportController {
 
     /**
      * 会员拆线图
+     *
      * @return
      */
     @GetMapping("/getMemberReport")
-    public Result getMemberReport(){
+    public Result getMemberReport() {
         // 组装过去12个月的数据, 前端是一个数组
         List<String> months = new ArrayList<String>();
         // 使用java中的calendar来操作日期, 日历对象
@@ -69,11 +70,11 @@ public class ReportController {
         }
 
         // 调用服务查询过去12个月会员数据 前端也是一数组 数值
-        List<Integer> memberCount =memberService.getMemberReport(months);
+        List<Integer> memberCount = memberService.getMemberReport(months);
         // 放入map
-        Map<String,Object> resultMap = new HashMap<String,Object>();
-        resultMap.put("months",months);
-        resultMap.put("memberCount",memberCount);
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("months", months);
+        resultMap.put("memberCount", memberCount);
 
         // 再返回给前端
         return new Result(true, MessageConstant.GET_MEMBER_NUMBER_REPORT_SUCCESS, resultMap);
@@ -83,15 +84,15 @@ public class ReportController {
      * 套餐预约占比
      */
     @GetMapping("/getSetmealReport")
-    public Result getSetmealReport(){
+    public Result getSetmealReport() {
         // 调用服务查询
         // 套餐数量
-        List<Map<String,Object>> setmealCount = setmealService.findSetmealCount();
+        List<Map<String, Object>> setmealCount = setmealService.findSetmealCount();
         // 套餐名称集合
         List<String> setmealNames = new ArrayList<String>();
         // [{name:,value}]
         // 抽取套餐名称
-        if(null != setmealCount){
+        if (null != setmealCount) {
             for (Map<String, Object> map : setmealCount) {
                 //map {name:,value}
                 // 获取套餐的名称
@@ -99,15 +100,16 @@ public class ReportController {
             }
         }
         // 封装返回的结果
-        Map<String,Object> resultMap = new HashMap<String,Object>();
-        resultMap.put("setmealNames",setmealNames);
-        resultMap.put("setmealCount",setmealCount);
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("setmealNames", setmealNames);
+        resultMap.put("setmealCount", setmealCount);
 
         return new Result(true, MessageConstant.GET_SETMEAL_COUNT_REPORT_SUCCESS, resultMap);
     }
 
     /**
      * 运营统计数据
+     *
      * @return
      */
     @GetMapping("/getBusinessReportData")
@@ -126,8 +128,8 @@ public class ReportController {
         String template = req.getSession().getServletContext().getRealPath("/template/report_template.xlsx");
         // 创建工作簿(模板路径)
         try (// 写在try()里的对象，必须实现closable接口，try()cathc()中的finally
-            OutputStream os = res.getOutputStream();
-            XSSFWorkbook wk = new XSSFWorkbook(template);){
+             OutputStream os = res.getOutputStream();
+             XSSFWorkbook wk = new XSSFWorkbook(template);) {
             // 获取工作表
             XSSFSheet sht = wk.getSheetAt(0);
             // 获取运营统计数据
@@ -153,14 +155,14 @@ public class ReportController {
             sht.getRow(9).getCell(7).setCellValue((Integer) reportData.get("thisMonthVisitsNumber"));
 
             // 热门套餐
-            List<Map<String,Object>> hotSetmeal = (List<Map<String,Object>> )reportData.get("hotSetmeal");
+            List<Map<String, Object>> hotSetmeal = (List<Map<String, Object>>) reportData.get("hotSetmeal");
             int row = 12;
             for (Map<String, Object> setmealMap : hotSetmeal) {
-                sht.getRow(row).getCell(4).setCellValue((String)setmealMap.get("name"));
+                sht.getRow(row).getCell(4).setCellValue((String) setmealMap.get("name"));
                 sht.getRow(row).getCell(5).setCellValue((Long) setmealMap.get("setmeal_count"));
                 BigDecimal proportion = (BigDecimal) setmealMap.get("proportion");
                 sht.getRow(row).getCell(6).setCellValue(proportion.doubleValue());
-                sht.getRow(row).getCell(7).setCellValue((String)setmealMap.get("remark"));
+                sht.getRow(row).getCell(7).setCellValue((String) setmealMap.get("remark"));
                 row++;
             }
 
@@ -169,7 +171,7 @@ public class ReportController {
             String filename = "运营统计数据报表.xlsx";
             filename = new String(filename.getBytes(), "ISO-8859-1");
             // 设置头信息，告诉浏览器，是带附件的，文件下载
-            res.setHeader("Content-Disposition","attachement;filename=" + filename);
+            res.setHeader("Content-Disposition", "attachement;filename=" + filename);
             wk.write(os);
             os.flush();
         } catch (IOException e) {
@@ -182,13 +184,13 @@ public class ReportController {
      * 导出运营统计数据报表
      */
     @GetMapping("/exportBusinessReport2")
-    public void exportBusinessReport2(HttpServletRequest req, HttpServletResponse res){
+    public void exportBusinessReport2(HttpServletRequest req, HttpServletResponse res) {
         // 获取模板的路径, getRealPath("/") 相当于到webapp目录下
         String template = req.getSession().getServletContext().getRealPath("/template/report_template2.xlsx");
         // 创建工作簿(模板路径)
         try (// 写在try()里的对象，必须实现closable接口，try()cathc()中的finally
              OutputStream os = res.getOutputStream();
-            ){
+        ) {
             // 获取运营统计数据
             Map<String, Object> reportData = reportService.getBusinessReport();
             // 数据模型
@@ -201,7 +203,7 @@ public class ReportController {
             String filename = "运营统计数据报表.xlsx";
             filename = new String(filename.getBytes(), "ISO-8859-1");
             // 设置头信息，告诉浏览器，是带附件的，文件下载
-            res.setHeader("Content-Disposition","attachement;filename=" + filename);
+            res.setHeader("Content-Disposition", "attachement;filename=" + filename);
             // 把数据模型中的数据填充到文件中
             JxlsHelper.getInstance().processTemplate(new FileInputStream(template), os, context);
         } catch (IOException e) {
@@ -214,7 +216,7 @@ public class ReportController {
      * 导出运营统计数据报表
      */
     @GetMapping("/exportBusinessReportPdf")
-    public Result exportBusinessReportPdf(HttpServletRequest req, HttpServletResponse res){
+    public Result exportBusinessReportPdf(HttpServletRequest req, HttpServletResponse res) {
         // 获取模板的路径, getRealPath("/") 相当于到webapp目录下
         String basePath = req.getSession().getServletContext().getRealPath("/template");
         // jrxml路径
@@ -231,17 +233,18 @@ public class ReportController {
             // 填充数据 JRBeanCollectionDataSource自定数据
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, businessReport, new JRBeanCollectionDataSource(hotSetmeals));
             res.setContentType("application/pdf");
-            res.setHeader("Content-Disposition","attachement;filename=businessReport.pdf");
+            res.setHeader("Content-Disposition", "attachement;filename=businessReport.pdf");
             JasperExportManager.exportReportToPdfStream(jasperPrint, res.getOutputStream());
             return null;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new Result(false,"导出运营数据统计pdf失败");
+        return new Result(false, "导出运营数据统计pdf失败");
     }
 
     /**
      * 会员性别饼占图
+     *
      * @return
      */
     @GetMapping("/getMemberSex")
@@ -266,25 +269,27 @@ public class ReportController {
 
     /**
      * 会员年龄段饼占图
+     *
      * @return
      */
     @GetMapping("/getMemberAge")
-    public Result getMemberAge(){
-        List<Map<String,Object>> memberAgeCount = memberService.findBirthCount();
+    public Result getMemberAge() {
+        List<Map<String, Object>> memberAgeCount = memberService.findBirthCount();
         // 年龄段集合
         List<String> memberNames = new ArrayList<>();
-        if (null != memberAgeCount){
+        if (null != memberAgeCount) {
             for (Map<String, Object> map : memberAgeCount) {
                 memberNames.add((String) map.get("name"));
             }
         }
-        Map<String,Object> resultMap = new HashMap<>();
+        Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("memberNames", memberNames);
         resultMap.put("memberAgeCount", memberAgeCount);
-        return new Result(true, MessageConstant.GET_MEMBER_NUMBER_Age_SUCCESS,resultMap);
+        return new Result(true, MessageConstant.GET_MEMBER_NUMBER_Age_SUCCESS, resultMap);
     }
-}    @RequestMapping("/fixeTimefindMember")
-    public Result fixeTimefindMember(String startTime,String endTime){
+
+    @RequestMapping("/fixeTimefindMember")
+    public Result fixeTimefindMember(String startTime, String endTime) {
 //        System.out.println(startTime + "!!!!!!!!!!!!!!!!!!!!" + endTime);
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
