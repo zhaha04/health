@@ -57,4 +57,6 @@ public interface MenuDao {
     void updateMenu(Menu menu);
     
     List<Menu> findByMenu(String loginUsername);
+
+    void addMenuRole(@Param("menuId") Integer menuId, @Param("roleId") Integer roleId);
 }

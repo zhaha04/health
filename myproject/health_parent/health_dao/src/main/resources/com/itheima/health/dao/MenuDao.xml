@@ -90,6 +90,10 @@
             (#{menuId},#{roleId})
     </insert>
 
+
+
+
+
     <!--删除菜单角色表中的对应菜单-->
     <delete id="deleteMenuRoleById" parameterType="int">
         delete 

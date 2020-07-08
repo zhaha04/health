@@ -54,7 +54,7 @@ public class RoleServiceImpl implements RoleService {
     public void deleteRoleById(int id) {
 
         //看角色是否被使用
-        Role roleIfUsed = roleDao.findRoleIfUsed(id);
+/*        Role roleIfUsed = roleDao.findRoleIfUsed(id);*/
         
         //删除用户表中的对应用户
         roleDao.deleteRoleById(id);

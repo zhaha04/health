@@ -30,11 +30,7 @@
 
             <!--搜索框-->
             <div class="filter-container">
-<<<<<<< .mine
-                <el-input placeholder="角色名称/角色关键字" @keyup.enter.native="handleCurrentChange(1)"
-=======
                 <el-input placeholder="角色名称 / 角色关键字" @keyup.enter.native="handleCurrentChange(1)"
->>>>>>> .theirs
                           v-model="pagination.queryString" style="width: 200px;"
                           class="filter-item"></el-input>
                 <el-button @click="handleCurrentChange(1)" class="dalfBut">查询</el-button>
@@ -102,36 +98,111 @@
                     </div>
                 </el-dialog>
             </div>
-
-            <!-- 编辑标签弹层 -->
-            <div class="add-form">
-                <el-dialog title="编辑检查项" :visible.sync="dialogFormVisible4Edit">
-                    <el-form ref="dataEditForm" :model="formData" :rules="rules" label-position="right"
-                             label-width="100px">
-                        <el-row>
-                            <el-col :span="12">
-                                <el-form-item label="角色名称" prop="name">
-                                    <el-input v-model="formData.name"/>
-                                </el-form-item>
-                            </el-col>
-                        </el-row>
-
-
-                        <el-row>
-                            <el-col :span="12">
-                                <el-form-item label="角色关键字" prop="keyword">
-                                    <el-input v-model="formData.keyword"></el-input>
-                                </el-form-item>
-                            </el-col>
-                        </el-row>
-                        <el-row>
-                            <el-col :span="24">
-                                <el-form-item label="描述">
-                                    <el-input v-model="formData.description" type="textarea"></el-input>
-                                </el-form-item>
-                            </el-col>
-                        </el-row>
-                    </el-form>
+            <div class="edit-form">
+                <el-dialog title="编辑套餐" :visible.sync="dialogFormVisible4Edit">
+                    <template>
+                        <el-tabs v-model="activeName" type="card">
+                            <el-tab-pane label="基本信息" name="first">
+                                <el-form label-position="right" label-width="100px">
+                                    <el-row>
+                                        <el-col :span="12">
+                                            <el-form-item label="编码">
+                                                <el-input v-model="formData.code"/>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-form-item label="名称">
+                                                <el-input v-model="formData.name"/>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="12">
+                                            <el-form-item label="适用性别">
+                                                <el-select v-model="formData.sex">
+                                                    <el-option label="不限" value="0"></el-option>
+                                                    <el-option label="男" value="1"></el-option>
+                                                    <el-option label="女" value="2"></el-option>
+                                                </el-select>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-form-item label="助记码">
+                                                <el-input v-model="formData.helpCode"/>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="12">
+                                            <el-form-item label="套餐价格">
+                                                <el-input v-model="formData.price"/>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-form-item label="适用年龄">
+                                                <el-input v-model="formData.age"/>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="24">
+                                            <el-form-item label="上传图片">
+                                                <el-upload
+                                                        class="avatar-uploader"
+                                                        action="/setmeal/upload.do"
+                                                        :auto-upload="autoUpload"
+                                                        name="imgFile"
+                                                        :show-file-list="false"
+                                                        :on-success="handleAvatarSuccess"
+                                                        :before-upload="beforeAvatarUpload">
+                                                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                                </el-upload>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="24">
+                                            <el-form-item label="说明">
+                                                <el-input v-model="formData.remark" type="textarea"></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="24">
+                                            <el-form-item label="注意事项">
+                                                <el-input v-model="formData.attention" type="textarea"></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                </el-form>
+                            </el-tab-pane>
+                            <el-tab-pane label="检查组信息" name="second">
+                                <div class="checkScrol">
+                                    <table class="datatable">
+                                        <thead>
+                                        <tr>
+                                            <th>选择</th>
+                                            <th>项目编码</th>
+                                            <th>项目名称</th>
+                                            <th>项目说明</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr v-for="c in tableData">
+                                            <td>
+                                                <input :id="c.id" v-model="checkgroupIds" type="checkbox" :value="c.id">
+                                            </td>
+                                            <td><label :for="c.id">{{c.code}}</label></td>
+                                            <td><label :for="c.id">{{c.name}}</label></td>
+                                            <td><label :for="c.id">{{c.remark}}</label></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </el-tab-pane>
+                        </el-tabs>
+                    </template>
                     <div slot="footer" class="dialog-footer">
                         <el-button @click="dialogFormVisible4Edit = false">取消</el-button>
                         <el-button type="primary" @click="handleEdit()">确定</el-button>
@@ -151,26 +222,17 @@
     new Vue({
         el: '#app',
         data: {
-            pagination: {//分页相关模型数据
-                currentPage: 1,//当前页码
-                pageSize: 10,//每页显示的记录数
-                total: 0,//总记录数
-                queryString: null//查询条件
+            autoUpload: true,//自动上传
+            imageUrl: null,//模型数据，用于上传图片完成后图片预览
+            activeName: 'first',//添加/编辑窗口Tab标签名称
+            pagination: {//分页相关属性
+                currentPage: 1,
+                pageSize: 10,
+                total: 100,
+                queryString: null,
             },
-            dataList: [],//当前页要展示的分页列表数据
+            dataList: [],//列表数据
             formData: {},//表单数据
-<<<<<<< .mine
-            dialogFormVisible: false,//增加表单是否可见
-            dialogFormVisible4Edit: false,//编辑表单是否可见
-            rules: {//校验规则
-                name: [{required: true, message: '角色名称为必填项', trigger: 'blur'}],
-                keyword: [{required: true, message: '角色关键字为必填项', trigger: 'blur'}]
-            }
-
-
-
-
-=======
             tableData: [],//添加表单窗口中角色列表数据
             childMenuIds: [],//添加表单窗口中子菜单复选框对应id
             roleIds: [],//添加表单窗口中角色复选框对应id
@@ -181,56 +243,51 @@
                 name: [{required: true, message: '角色名称为必填项', trigger: 'blur'}],
                 keyword: [{required: true, message: '角色关键字为必填项', trigger: 'blur'}]
             }
->>>>>>> .theirs
         },
         //钩子函数，VUE对象初始化完成后自动执行
         created() {
             this.findPage();
         },
         methods: {
-            //编辑
-            handleEdit() {
-                // 校验表单输入是否合法
-                this.$refs['dataEditForm'].validate((valid) => {
-                    if (valid) {    // 表单输入合法
-                        axios.post("/checkitem/update.do", this.formData).then(res => {
-                            this.$message({
-                                message: res.data.message,
-                                type: res.data.flag ? 'success' : 'error'
-                            })
-                            this.dialogFormVisible4Edit = false;    // 把编辑弹窗关闭
-                        }).finally(() => {
-                            this.findPage();    // 重新刷新数据
-                        });
-                    } else {    // 表单输入不合法
-                        this.$message.error('表单数据校验失败');
-                        return false;
-                    }
+            // 文件上传成功后的钩子，response为服务端返回的值，file为当前上传的文件封装成的js对象
+            // 文件上传 elementUI帮我们发送请求, response已经被封装 = 原来 res.data
+            // response => Result
+            /**
+             {
+                   flag:
+                   message:
+                   data: {
+                      imgName: 图片名称  保存到数据库
+                      domain: 七牛的域名
+                   }
+                }
+             */
+            handleAvatarSuccess(response, file) {
+                // 提示成功或失败，要回显图片
+                this.$message({
+                    message: response.message,
+                    type: response.flag ? "success" : "error"
                 })
+                if (response.flag) {
+                    // 回显图片
+                    this.imageUrl = response.data.domain + response.data.imgName;
+                    // 表单中没有img参数，后台数据库用的就是img字段，补上它的值
+                    // 前端中的json数据 {key,value}=> map,
+                    // 对象.属性名(不存在) => map.put(不存在的key,value)
+                    this.formData.img = response.data.imgName;
+                }
+            },//上传图片之前执行
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+                if (!isJPG) {
+                    this.$message.error('上传套餐图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传套餐图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
             },
-<<<<<<< .mine
-            //添加
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
             //编辑
             handleEdit() {
                 // 校验表单输入是否合法
@@ -252,21 +309,12 @@
                 })
             },
             //添加
->>>>>>> .theirs
             handleAdd() {
-<<<<<<< .mine
-                // 校验表单输入项是否合法
-                this.$refs['dataAddForm'].validate((valid) => {
-                    if (valid) {    // 表单校验通过，发送ajax请求，将数据提交给后台添加数据
-                        // 发送ajax数据进行添加
-                        axios.post("/checkitem/add.do", this.formData).then(res => {
-=======
                 // 校验表单输入项是否合法
                 this.$refs['dataAddForm'].validate((valid) => {
                     if (valid) {    // 表单校验通过，发送ajax请求，将数据提交给后台添加数据
                         // 发送ajax数据进行添加
                         axios.post("/role/addRole.do", this.formData).then(res => {
->>>>>>> .theirs
                             this.$message({
                                 message: res.data.message,
                                 type: res.data.flag ? "success" : "error"
@@ -284,15 +332,6 @@
             },
             //分页查询
             findPage() {
-<<<<<<< .mine
-                axios.post("/checkitem/findPage.do", this.pagination).then(res => {
-                    if (res.data.flag) {    // 查询成功...
-                        this.dataList = res.data.data.rows;  // 绑定数据到表单数据中
-                        this.pagination.total = res.data.data.total;  // 绑定分页数据的总记录数
-                    } else {    // 查询失败提示
-
-
-=======
                 axios.post('/role/findRoleByPage.do', this.pagination).then(res => {
                     if (res.data.flag) {
                         // 绑定分页的结果集
@@ -300,7 +339,6 @@
                         // 总计录数
                         this.pagination.total = res.data.data.total;
                     } else {
->>>>>>> .theirs
                         this.$message.error(res.data.message);
                     }
                 })
@@ -311,19 +349,9 @@
             },
             // 弹出添加窗口
             handleCreate() {
-                this.resetForm();   // 清空表单
+                this.resetForm();
+                //弹出添加窗口
                 this.dialogFormVisible = true;
-<<<<<<< .mine
-
-
-
-
-
-
-
-
-
-=======
 
                 // 加载角色列表数据
                 axios.get('/role/findAllRole.do').then(res => {
@@ -333,7 +361,6 @@
                         this.$message.error(res.data.message);
                     }
                 })
->>>>>>> .theirs
             },
             // 弹出编辑窗口
             handleUpdate(row) {
@@ -347,43 +374,29 @@
             },
             // 删除
             handleDelete(row) {
-<<<<<<< .mine
-                this.$confirm("确认删除项目编码【" + row.code + "】的记录吗？", "提示", {
-
-
-
-
-=======
                 //row套餐行记录
                 var id = row.id;
                 this.$confirm('此操作将【永久删除】该角色, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
->>>>>>> .theirs
-                        type: 'warning'
-<<<<<<< .mine
-                    }
-                ).then(() => {
-                    axios.post("/checkitem/delete.do?id=" + row.id).then(res => {
-                        this.$message({ // 提示发是否删除成功...
-=======
+                    type: 'warning'
                 }).then(() => {
                     // 点击确定后调用
                     axios.post('/role/deleteRoleById.do?id=' + id).then(res => {
                         this.$message({
->>>>>>> .theirs
                             message: res.data.message,
-                            type: res.data.flag ? 'success' : 'error'
+                            type: res.data.flag ? "success" : "error"
                         })
-                    }).finally(() => {
-                        this.findPage();    // 重新刷新数据
+                        if (res.data.flag) {
+                            // 成功
+                            // 刷新列表数据
+                            this.findPage();
+                        }
                     })
                 }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消删除'
-                    });
-                })
+                    // 点击取消后调用
+                    // 空着，防止报错
+                });
             }
         }
     })
