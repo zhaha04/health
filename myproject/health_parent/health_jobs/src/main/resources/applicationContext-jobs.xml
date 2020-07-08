@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
+    <!-- 指定应用名称 -->
+    <dubbo:application name="health_jobs" />
+    <!--指定服务注册中心地址-->
+    <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
+    <!--批量扫描 dubbo2.6.0下，mvc不需要再扫controller
+        2.6.2 则mvc要扫一次controller
+        扫到SpringSecurityUserService
+    -->
+    <dubbo:annotation package="com.itheima.health.job" />
+    <!--
+        超时全局设置 10分钟
+        check=false 不检查服务提供方，开发阶段建议设置为false
+        check=true 启动时检查服务提供方，如果服务提供方没有启动则报错
+    -->
+    <dubbo:consumer timeout="600000" check="false"/>
     <!--  自定义的类 注册到spring容器  -->
-    <context:component-scan base-package="com.itheima.health.job"/>
+
+    <!--配置任务1: 清理垃圾图片-->
 
 <!--  任务策略  -->
     <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -18,13 +35,32 @@
         <property name="cronExpression" value="0 0 4 * * ?"/>
         <property name="jobDetail" ref="jobDetail"/>
     </bean>
-<!--  调度容器  -->
+
+    <!--配置任务2: 清理预约设置历史数据-->
+
+    <!--  任务策略  -->
+    <bean id="jobDetail_2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="clearOrderSettingJob"/>
+        <property name="targetMethod" value="clearOrderSetting"/>
+    </bean>
+    <!--  触发器  -->
+    <bean id="trigger_2" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="jobDetail_2"/>
+        <!--<property name="cronExpression" value="0 0/1 * * * ?"/>-->  <!--测试, 每一分钟执行一次-->
+        <property name="cronExpression" value="0031*?"/> <!--设置每个月1号凌晨3点开始执行一次-->
+    </bean>
+    <!--  调度容器  -->
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
                 <ref bean="trigger"/>
+                <ref bean="trigger_2"/>
             </list>
         </property>
+        <property name="quartzProperties">
+            <props>
+                <prop key="skipUpdateCheck">false</prop>
+            </props>
+        </property>
     </bean>
-
 </beans>

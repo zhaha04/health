@@ -95,4 +95,8 @@
     <select id="findMemberTotalCount" resultType="int">
         select count(id) from t_member
     </select>
+    <select id="findByMonthMemberCount" resultType="int">
+        select count(1) from t_member where regTime between #{fristDay} and #{lastDay};
+    </select>
+
 </mapper>

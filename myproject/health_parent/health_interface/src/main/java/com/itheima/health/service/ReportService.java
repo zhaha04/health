@@ -1,5 +1,7 @@
 package com.itheima.health.service;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public interface ReportService {
@@ -21,4 +23,7 @@ public interface ReportService {
      *      hotSetmeal（热门套餐（取前4）） -> List<Map<String,Object>>
      */
     Map<String,Object> getBusinessReport();
+
+
+    int findMemberCount(Date sDate) throws Exception;
 }

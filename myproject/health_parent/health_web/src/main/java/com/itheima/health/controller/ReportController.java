@@ -3,9 +3,11 @@ package com.itheima.health.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.health.constant.MessageConstant;
 import com.itheima.health.entity.Result;
+import com.itheima.health.exception.HealthException;
 import com.itheima.health.service.MemberService;
 import com.itheima.health.service.ReportService;
 import com.itheima.health.service.SetmealService;
+import com.itheima.health.utils.DateUtils;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -13,9 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jxls.common.Context;
 import org.jxls.transform.poi.PoiContext;
 import org.jxls.util.JxlsHelper;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +24,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -237,5 +238,72 @@ public class ReportController {
             e.printStackTrace();
         }
         return new Result(false,"导出运营数据统计pdf失败");
+    }
+
+    @RequestMapping("/fixeTimefindMember")
+    public Result fixeTimefindMember(String startTime,String endTime){
+//        System.out.println(startTime + "!!!!!!!!!!!!!!!!!!!!" + endTime);
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
+            Date sDate = dateFormat.parse(startTime);
+            Date eDate = dateFormat.parse(endTime);
+            if (startTime == null) {
+                return new Result(false, "开始时间不正确或为空");
+            }
+            if (endTime == null || endTime == "") {
+                return new Result(false, "结束时间为空或者不正确");
+            }
+
+            if (sDate.after(eDate)) {
+                return new Result(false, "不想让你倒着查  要多写好多行代码");
+            }
+            if (sDate.equals(eDate)) {
+                return new Result(false, "小于一个月,真的没啥好看的");
+            }
+            if (eDate.after(new Date())) {
+                return new Result(false, "不能大于今天");
+            }
+
+            Calendar scalendar = Calendar.getInstance();
+            scalendar.setTime(sDate);
+
+            List<String> months = new ArrayList<String>();
+            List<Integer> memberCounts = new ArrayList<Integer>();
+
+
+            while (true) {
+                if (scalendar.getTime().before(eDate)) {
+                    scalendar.add(Calendar.MONTH, 1);
+                    months.add(dateFormat.format(scalendar.getTime()));
+                    int memberCount = reportService.findMemberCount(scalendar.getTime());
+                    memberCounts.add(memberCount);
+
+                } else {
+
+                    break;
+                }
+            }
+//            long sDateTime = sDate.getTime();
+//            long eDatetime = eDate.getTime();
+//            long nd=1000*24*60*60;
+//            Double stime = sDateTime / nd*1.0;
+//            Double etime = eDatetime / nd * 1.0;
+//            int smonth = (int) Math.ceil((stime / 30));
+//            int emonth = (int) Math.ceil(etime);
+//            List<String> months = new ArrayList<String>();
+//            int Monthnum = smonth - emonth;
+//            for (int i = 0; i < Monthnum; i++) {
+//
+//
+//            } return    new Result(true, "ok");
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("months", months);
+            map.put("memberCount", memberCounts);
+
+            return new Result(true, "查询成功", map);
+        } catch (Exception e) {
+            throw new HealthException("抛出了一条信息");
+        }
+
     }
 }
