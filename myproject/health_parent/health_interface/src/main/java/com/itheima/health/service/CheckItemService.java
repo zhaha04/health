@@ -55,4 +55,10 @@ public interface CheckItemService {
      * @param checkitem
      */
     void update(CheckItem checkitem) throws GoodsInSoldException;
+
+    /**
+     * 获取被关联的检查项的所有id
+     * @return
+     */
+    Set<String> findAllByCheckeitemToIds();
 }
