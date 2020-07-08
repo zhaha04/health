@@ -12,7 +12,6 @@ import java.util.List;
  * User: Eric
  */
 public interface UserDao {
-
     /**
      * 通过用户ID查询拥有的角色ID
      */
@@ -24,7 +23,6 @@ public interface UserDao {
      * @return
      */
     User findByUsername(String username);
-
     /**
      * 条件查询
      */

@@ -108,7 +108,7 @@ public class OrderController {
             doc.add(new Paragraph("体检人: " + (String) orderInfo.get("member"), font));
             doc.add(new Paragraph("体检套餐: " + (String) orderInfo.get("setmeal"), font));
             Date orderDate = (Date) orderInfo.get("orderDate");
-            doc.add(new Paragraph("体检日期: " + DateUtils.parseDate2String(orderDate, "yyyy-MM-dd"), font));
+            doc.add(new Paragraph("体检日期: " + DateUtils.parseDate2String(orderDate,"yyyy-MM-dd"),font));
             doc.add(new Paragraph("预约类型: " + (String) orderInfo.get("orderType"), font));
 
             // 套餐详情

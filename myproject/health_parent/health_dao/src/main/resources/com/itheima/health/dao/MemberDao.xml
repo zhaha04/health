@@ -99,4 +99,41 @@
         select count(1) from t_member where regTime between #{fristDay} and #{lastDay};
     </select>
 
+    <!-- 获取会员性别的数量 -->
+    <select id="findSexCount" resultType="java.util.Map">
+        SELECT (CASE sex WHEN 1 THEN '男' ELSE '女' END) AS `name`,COUNT(sex) `value` FROM t_member  GROUP BY sex
+    </select>
+
+    <!--获取会员各年龄段的人数-->
+    <select id="findBirthCount" resultType="java.util.Map">
+        SELECT
+        (
+        CASE
+        WHEN a.age IS NULL
+        THEN '未知'
+        WHEN a.age BETWEEN 0
+        AND 18
+        THEN '0 - 18 岁'
+        WHEN a.age BETWEEN 18
+        AND 30
+        THEN '18 - 30 岁'
+        WHEN a.age BETWEEN 31
+        AND 45
+        THEN '30 - 45 岁'
+        WHEN a.age &gt;= 45
+        THEN '45岁以上'
+        END
+        ) AS `name`,
+        COUNT(*) `value`
+        FROM
+        (SELECT
+        (
+        YEAR (CURDATE()) - YEAR (birthday) - 1+ (
+        DATE_FORMAT(birthday, '% m % d') &lt;= (DATE_FORMAT(CURDATE(), '% m % d'))
+        )
+        ) age
+        FROM
+        t_member) a
+        GROUP BY NAME
+    </select>
 </mapper>

@@ -72,13 +72,11 @@
                     select="com.itheima.health.dao.CheckItemDao.findCheckItemListById">
         </collection>
     </resultMap>
-
     <!--根据套餐id查询检查项信息-->
     <select id="findCheckGroupListById" resultMap="findByIdResultMap">
         select * from t_checkgroup  where id
         in (select checkgroup_id from t_setmeal_checkgroup where setmeal_id=#{id})
     </select>
-
     <!--findAllByCheckegroupToIds-->
     <select id="findAllByCheckegroupToIds" resultType="java.lang.String">
         select checkgroup_id from t_setmeal_checkgroup
