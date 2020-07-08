@@ -30,6 +30,7 @@ public interface CheckItemService {
     void add(CheckItem checkitem);
 
     /**
+     *
      * @param queryPageBean
      * @return
      */
@@ -44,7 +45,6 @@ public interface CheckItemService {
 
     /**
      * 通过id查询
-     *
      * @param id
      * @return
      */
@@ -52,16 +52,13 @@ public interface CheckItemService {
 
     /**
      * 更新检查项
-     *
      * @param checkitem
      */
     void update(CheckItem checkitem) throws GoodsInSoldException;
 
     /**
      * 获取被关联的检查项的所有id
-     *
      * @return
      */
     Set<String> findAllByCheckeitemToIds();
-
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description: No Description
@@ -56,5 +57,23 @@ public class MemberServiceImpl implements MemberService {
             }
         }
         return memberCount;
+    }
+
+    /**
+     * 获取会员性别的数量
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> findSexCount() {
+        return memberDao.findSexCount();
+    }
+
+    /**
+     * 获取会员各年龄段的人数
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> findBirthCount() {
+        return memberDao.findBirthCount();
     }
 }

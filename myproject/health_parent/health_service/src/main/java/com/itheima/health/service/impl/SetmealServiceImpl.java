@@ -19,6 +19,7 @@ import com.itheima.health.service.CheckGroupService;
 import com.itheima.health.service.CheckItemService;
 import com.itheima.health.service.SetmealService;
 import com.itheima.health.utils.QiNiuUtils;
+import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -154,7 +155,7 @@ public class SetmealServiceImpl implements SetmealService {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         dataMap.put("setmeal", setmealDetail);
         File setmealDetailFile = new File(out_put_path, "setmeal_" + setmealDetail.getId() + ".html");
-        template.process(dataMap, new BufferedWriter(new OutputStreamWriter(new FileOutputStream(setmealDetailFile), "utf-8")));
+        template.process(dataMap, new BufferedWriter(new OutputStreamWriter(new FileOutputStream(setmealDetailFile),"utf-8")));
     }
 
     /**
@@ -174,7 +175,7 @@ public class SetmealServiceImpl implements SetmealService {
         // 给模板填充数据 new OutputStreamWriter要指定编码格式，否则中文乱码
         // 生成的文件 c:/sz89/health_parent/health_mobile/src/main/webapp/pages/m_setmeal.html
         File setmealListFile = new File(out_put_path, "m_setmeal.html");
-        template.process(dataMap, new BufferedWriter(new OutputStreamWriter(new FileOutputStream(setmealListFile), "utf-8")));
+        template.process(dataMap, new BufferedWriter(new OutputStreamWriter(new FileOutputStream(setmealListFile),"utf-8")));
     }
 
     /**
