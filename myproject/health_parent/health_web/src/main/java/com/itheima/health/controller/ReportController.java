@@ -76,7 +76,7 @@ public class ReportController {
         resultMap.put("memberCount",memberCount);
 
         // 再返回给前端
-        return new Result(true, MessageConstant.GET_MEMBER_NUMBER_REPORT_SUCCESS,resultMap);
+        return new Result(true, MessageConstant.GET_MEMBER_NUMBER_REPORT_SUCCESS, resultMap);
     }
 
     /**
@@ -103,7 +103,7 @@ public class ReportController {
         resultMap.put("setmealNames",setmealNames);
         resultMap.put("setmealCount",setmealCount);
 
-        return new Result(true, MessageConstant.GET_SETMEAL_COUNT_REPORT_SUCCESS,resultMap);
+        return new Result(true, MessageConstant.GET_SETMEAL_COUNT_REPORT_SUCCESS, resultMap);
     }
 
     /**
@@ -113,7 +113,7 @@ public class ReportController {
     @GetMapping("/getBusinessReportData")
     public Result getBusinessReportData() {
         Map<String, Object> businessReport = reportService.getBusinessReport();
-        return new Result(true, MessageConstant.GET_BUSINESS_REPORT_SUCCESS,businessReport);
+        return new Result(true, MessageConstant.GET_BUSINESS_REPORT_SUCCESS, businessReport);
 
     }
 
@@ -121,7 +121,7 @@ public class ReportController {
      * 导出运营统计数据报表
      */
     @GetMapping("/exportBusinessReport")
-    public void exportBusinessReport(HttpServletRequest req, HttpServletResponse res){
+    public void exportBusinessReport(HttpServletRequest req, HttpServletResponse res) {
         // 获取模板的路径, getRealPath("/") 相当于到webapp目录下
         String template = req.getSession().getServletContext().getRealPath("/template/report_template.xlsx");
         // 创建工作簿(模板路径)
@@ -136,28 +136,28 @@ public class ReportController {
             sht.getRow(2).getCell(5).setCellValue(reportData.get("reportDate").toString());
             //======================== 会员 ===========================
             // 新增会员数 4,5
-            sht.getRow(4).getCell(5).setCellValue((Integer)reportData.get("todayNewMember"));
+            sht.getRow(4).getCell(5).setCellValue((Integer) reportData.get("todayNewMember"));
             // 总会员数 4,7
-            sht.getRow(4).getCell(7).setCellValue((Integer)reportData.get("totalMember"));
+            sht.getRow(4).getCell(7).setCellValue((Integer) reportData.get("totalMember"));
             // 本周新增会员数5,5
-            sht.getRow(5).getCell(5).setCellValue((Integer)reportData.get("thisWeekNewMember"));
+            sht.getRow(5).getCell(5).setCellValue((Integer) reportData.get("thisWeekNewMember"));
             // 本月新增会员数 5,7
-            sht.getRow(5).getCell(7).setCellValue((Integer)reportData.get("thisMonthNewMember"));
+            sht.getRow(5).getCell(7).setCellValue((Integer) reportData.get("thisMonthNewMember"));
 
             //=================== 预约 ============================
-            sht.getRow(7).getCell(5).setCellValue((Integer)reportData.get("todayOrderNumber"));
-            sht.getRow(7).getCell(7).setCellValue((Integer)reportData.get("todayVisitsNumber"));
-            sht.getRow(8).getCell(5).setCellValue((Integer)reportData.get("thisWeekOrderNumber"));
-            sht.getRow(8).getCell(7).setCellValue((Integer)reportData.get("thisWeekVisitsNumber"));
-            sht.getRow(9).getCell(5).setCellValue((Integer)reportData.get("thisMonthOrderNumber"));
-            sht.getRow(9).getCell(7).setCellValue((Integer)reportData.get("thisMonthVisitsNumber"));
+            sht.getRow(7).getCell(5).setCellValue((Integer) reportData.get("todayOrderNumber"));
+            sht.getRow(7).getCell(7).setCellValue((Integer) reportData.get("todayVisitsNumber"));
+            sht.getRow(8).getCell(5).setCellValue((Integer) reportData.get("thisWeekOrderNumber"));
+            sht.getRow(8).getCell(7).setCellValue((Integer) reportData.get("thisWeekVisitsNumber"));
+            sht.getRow(9).getCell(5).setCellValue((Integer) reportData.get("thisMonthOrderNumber"));
+            sht.getRow(9).getCell(7).setCellValue((Integer) reportData.get("thisMonthVisitsNumber"));
 
             // 热门套餐
             List<Map<String,Object>> hotSetmeal = (List<Map<String,Object>> )reportData.get("hotSetmeal");
             int row = 12;
             for (Map<String, Object> setmealMap : hotSetmeal) {
                 sht.getRow(row).getCell(4).setCellValue((String)setmealMap.get("name"));
-                sht.getRow(row).getCell(5).setCellValue((Long)setmealMap.get("setmeal_count"));
+                sht.getRow(row).getCell(5).setCellValue((Long) setmealMap.get("setmeal_count"));
                 BigDecimal proportion = (BigDecimal) setmealMap.get("proportion");
                 sht.getRow(row).getCell(6).setCellValue(proportion.doubleValue());
                 sht.getRow(row).getCell(7).setCellValue((String)setmealMap.get("remark"));
@@ -203,7 +203,7 @@ public class ReportController {
             // 设置头信息，告诉浏览器，是带附件的，文件下载
             res.setHeader("Content-Disposition","attachement;filename=" + filename);
             // 把数据模型中的数据填充到文件中
-            JxlsHelper.getInstance().processTemplate(new FileInputStream(template),os,context);
+            JxlsHelper.getInstance().processTemplate(new FileInputStream(template), os, context);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -227,7 +227,7 @@ public class ReportController {
             JasperCompileManager.compileReportToFile(jrxml, jasper);
             Map<String, Object> businessReport = reportService.getBusinessReport();
             // 热门套餐(list -> Detail1)
-            List<Map<String,Object>> hotSetmeals = (List<Map<String,Object>>)businessReport.get("hotSetmeal");
+            List<Map<String, Object>> hotSetmeals = (List<Map<String, Object>>) businessReport.get("hotSetmeal");
             // 填充数据 JRBeanCollectionDataSource自定数据
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, businessReport, new JRBeanCollectionDataSource(hotSetmeals));
             res.setContentType("application/pdf");
@@ -240,7 +240,50 @@ public class ReportController {
         return new Result(false,"导出运营数据统计pdf失败");
     }
 
-    @RequestMapping("/fixeTimefindMember")
+    /**
+     * 会员性别饼占图
+     * @return
+     */
+    @GetMapping("/getMemberSex")
+    public Result getMemberSex() {
+        // 调用服务查询
+        List<Map<String, Object>> memberSexCount = memberService.findSexCount();
+        // 性别集合
+        List<String> memberNames = new ArrayList<>();
+        // 抽取性别
+        if (null != memberSexCount) {
+            for (Map<String, Object> map : memberSexCount) {
+                // 获取性别名称
+                memberNames.add((String) map.get("name"));
+
+            }
+        }
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("memberNames", memberNames);
+        resultMap.put("memberSexCount", memberSexCount);
+        return new Result(true, MessageConstant.GET_MEMBER_NUMBER_SEX_SUCCESS, resultMap);
+    }
+
+    /**
+     * 会员年龄段饼占图
+     * @return
+     */
+    @GetMapping("/getMemberAge")
+    public Result getMemberAge(){
+        List<Map<String,Object>> memberAgeCount = memberService.findBirthCount();
+        // 年龄段集合
+        List<String> memberNames = new ArrayList<>();
+        if (null != memberAgeCount){
+            for (Map<String, Object> map : memberAgeCount) {
+                memberNames.add((String) map.get("name"));
+            }
+        }
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("memberNames", memberNames);
+        resultMap.put("memberAgeCount", memberAgeCount);
+        return new Result(true, MessageConstant.GET_MEMBER_NUMBER_Age_SUCCESS,resultMap);
+    }
+}    @RequestMapping("/fixeTimefindMember")
     public Result fixeTimefindMember(String startTime,String endTime){
 //        System.out.println(startTime + "!!!!!!!!!!!!!!!!!!!!" + endTime);
         try {
