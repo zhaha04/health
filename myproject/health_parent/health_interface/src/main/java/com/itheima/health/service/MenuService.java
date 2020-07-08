@@ -11,6 +11,11 @@ public interface MenuService {
     /**
      * 分页查询菜单
      */
+    Menu findMenuByMenuName(String MenuName);
+
+    /**
+     * 分页查询菜单
+     */
     PageResult<Menu> findMenuByPage(QueryPageBean queryPageBean);
 
     /**
@@ -27,6 +32,21 @@ public interface MenuService {
      * 删除菜单
      */
     void deleteMenuById(int id);
+
+    /**
+     * 通过id查询菜单
+     */
+    Menu findMenuById(int id);
+
+    /**
+     * 通过菜单ID查询所拥有的角色ID
+     */
+    List<Integer> findRoleIdsByMenuId(int id);
+
+    /**
+     * 修改菜单
+     */
+    void updateMenu(Menu menu,Integer[] roleIds);
 
 
     /**

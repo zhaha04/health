@@ -30,6 +30,7 @@ public class UserController {
     @GetMapping("/getLoginUsername")
     public Result getLoginUsername() {
         // 获取登陆用户的认证信息
+    
         org.springframework.security.core.userdetails.User loginUser = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         // 登陆用户名
         String username = loginUser.getUsername();
@@ -78,12 +79,17 @@ public class UserController {
      */
     @PostMapping("/addUser")
     public Result addUser(@RequestBody User user, Integer[] roleIds) {
+        User userInDB = userService.findByUsername(user.getUsername());
+        
+        if (null == userInDB){
+            //调用服务
+            userService.addUser(user,roleIds);
 
-        //调用服务
-        userService.addUser(user, roleIds);
-
-        //返回结果
-        return new Result(true, MessageConstant.ADD_USER_SUCCESS);
+            //返回结果
+            return new Result(true,MessageConstant.ADD_USER_SUCCESS);
+        } else {
+            return new Result(false,"用户名已被占用！");
+        }
     }
 
     /**

@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 根据登陆用户名称查询用户权限信息
+     * 根据用户名查询用户
      * @param username
      * @return
      */

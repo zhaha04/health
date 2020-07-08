@@ -5,12 +5,30 @@ package com.itheima.health.constant;
  */
 public interface MessageConstant {
     
+    static final String UPDATE_MENU_SUCCESS = "修改菜单成功";
+    static final String UPDATE_MENU_FAIL = "修改菜单失败";
+    static final String UPDATE_ROLE_SUCCESS = "修改角色成功";
+    static final String UPDATE_ROLE_FAIL = "修改角色失败";
+    static final String ADD_ROLE_SUCCESS = "添加角色成功";
+    static final String ADD_ROLE_FAIL = "添加角色失败";
+    static final String DELETE_ROLE_SUCCESS = "删除角色成功";
+    static final String DELETE_ROLE_FAIL = "删除角色失败";
+    static final String QUERY_ROLE_SUCCESS = "查询角色成功";
+    static final String QUERY_ROLE_FAIL = "查询角色失败";
+    static final String UPDATE_PERMISSION_SUCCESS = "修改权限成功";
+    static final String UPDATE_PERMISSION_FAIL = "修改权限失败";
+    static final String ADD_PERMISSION_SUCCESS = "添加权限成功";
+    static final String ADD_PERMISSION_FAIL = "添加权限失败";
+    static final String DELETE_PERMISSION_SUCCESS = "删除权限成功";
+    static final String DELETE_PERMISSION_FAIL = "删除权限失败";
+    static final String QUERY_PERMISSION_SUCCESS = "查询权限成功";
+    static final String QUERY_PERMISSION_FAIL = "查询权限失败";
     static final String DELETE_MENU_SUCCESS = "删除菜单成功";
     static final String DELETE_MENU_FAIL = "删除菜单失败";
     static final String ADD_MENU_SUCCESS = "添加菜单成功";
     static final String ADD_MENU_FAIL = "添加菜单成失败";
-    static final String QUERY_MENU_SUCCESS = "分页查询菜单成功";
-    static final String QUERY_MENU_FAIL = "分页查询菜单失败";
+    static final String QUERY_MENU_SUCCESS = "查询菜单成功";
+    static final String QUERY_MENU_FAIL = "查询菜单失败";
     static final String UPDATE_USER_SUCCESS = "修改用户成功";
     static final String UPDATE_USER_FAIL = "修改用户失败";
     static final String QUERY_USER_SUCCESS = "查询用户成功";
@@ -88,8 +106,6 @@ public interface MessageConstant {
     static final String GET_MEMBER_NUMBER_Age_SUCCESS = "获取会员年龄段数据成功";
     static final String DELETE_USER_SUCCESS = "删除用户成功";
     static final String DELETE_USER_FAIL = "删除用户失败";
-    static final String QUERY_ROLE_SUCCESS = "查询角色成功";
-    static final String QUERY_ROLE_FAIL = "查询角色成功";
     static final String ADD_USER_SUCCESS = "添加用户成功";
     static final String ADD_USER_FAIL = "添加用户失败";
 }

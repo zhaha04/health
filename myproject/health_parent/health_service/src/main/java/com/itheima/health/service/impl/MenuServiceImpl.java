@@ -54,6 +54,14 @@ public class MenuServiceImpl implements MenuService {
      * 添加菜单
      */
     @Override
+    public Menu findMenuByMenuName(String menuName) {
+        return menuDao.findMenuByMenuName(menuName);
+    }
+    
+    /**
+     * 添加菜单
+     */
+    @Override
     @Transactional
     public void addMenu(Menu menu, Integer[] roleIds) {
         
@@ -83,6 +91,44 @@ public class MenuServiceImpl implements MenuService {
 
         //删除用户表中的对应用户
         menuDao.deleteMenuById(id);
+    }
+
+    /**
+     * 通过ID查询菜单
+     * @param id
+     * @return
+     */
+    @Override
+    public Menu findMenuById(int id) {
+        return menuDao.findMenuById(id);
+    }
+
+    /**
+     * 通过菜单ID查询拥有的角色ID
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Integer> findRoleIdsByMenuId(int id) {
+        return menuDao.findRoleIdsByMenuId(id);
+    }
+
+    /**
+     * 修改菜单
+     */
+    @Override
+    public void updateMenu(Menu menu, Integer[] roleIds) {
+
+        //更新用户基本信息
+        menuDao.updateMenu(menu);
+
+        //删除旧的用户角色信息
+        menuDao.deleteMenuRoleById(menu.getId());
+        //添加新的用户角色信息
+        for (Integer roleId : roleIds){
+
+            menuDao.addMenuRole(menu.getId(),roleId);
+        }
     }
 
     /**

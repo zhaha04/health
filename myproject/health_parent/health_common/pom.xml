@@ -160,11 +160,11 @@
             <artifactId>itext</artifactId>
         </dependency>
         <!-- 导入iText报表，支持中文 -->
-        <dependency>
+        <!--<dependency>
             <groupId>com.alpha</groupId>
             <artifactId>itextasian</artifactId>
             <version>1.0.0</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>

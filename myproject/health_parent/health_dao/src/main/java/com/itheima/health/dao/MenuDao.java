@@ -26,7 +26,6 @@ public interface MenuDao {
     /**
      * 绑定菜单与角色的关系
      */
-    void addMenuRole(@Param("menuId") Integer menuId, @Param("roleId") Integer roleId);
 
     /**
      * 删除菜单与角色的关系
@@ -37,10 +36,25 @@ public interface MenuDao {
      * 删除菜单
      */
     void deleteMenuById(int id);
-
+     /**
+     * 查询菜单和子菜单
+*/
+	Menu findMenuById(int id);
 
     /**
-     * 查询菜单和子菜单`
+     * 根据ID查询菜单拥有的角色ID
      */
+    List<Integer> findRoleIdsByMenuId(int id);
+
+    /**
+     * 根据名称查询
+     */
+    Menu findMenuByMenuName(String menuName);
+    
+    /**
+     * 更新用户
+     */
+    void updateMenu(Menu menu);
+    
     List<Menu> findByMenu(String loginUsername);
 }

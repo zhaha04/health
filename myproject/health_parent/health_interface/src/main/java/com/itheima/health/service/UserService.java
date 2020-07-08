@@ -13,13 +13,13 @@ import java.util.List;
  */
 public interface UserService {
     /**
-     * 通过用户ID查询所拥有的角色ID
+     * 通过ID查询所拥有的角色ID
      */
     List<Integer> findRoleIdsByUserId(int id);
     
     
     /**
-     * 根据用户名查询用户权限信息
+     * 根据用户名查询用户
      * @param username
      * @return
      */

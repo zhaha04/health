@@ -30,7 +30,11 @@
 
             <!--搜索框-->
             <div class="filter-container">
+<<<<<<< .mine
                 <el-input placeholder="角色名称/角色关键字" @keyup.enter.native="handleCurrentChange(1)"
+=======
+                <el-input placeholder="角色名称 / 角色关键字" @keyup.enter.native="handleCurrentChange(1)"
+>>>>>>> .theirs
                           v-model="pagination.queryString" style="width: 200px;"
                           class="filter-item"></el-input>
                 <el-button @click="handleCurrentChange(1)" class="dalfBut">查询</el-button>
@@ -40,7 +44,7 @@
             <!--角色列表详情-->
             <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
                 <el-table-column type="index" align="center" label="序号"></el-table-column>
-                <el-table-column prop="code" label="角色名称" align="center"></el-table-column>
+                <el-table-column prop="name" label="角色名称" align="center"></el-table-column>
                 <el-table-column prop="keyword" label="角色关键字" align="center"></el-table-column>
                 <el-table-column prop="description" label="描述" align="center"></el-table-column>
                 <el-table-column label="操作" align="center">
@@ -155,12 +159,29 @@
             },
             dataList: [],//当前页要展示的分页列表数据
             formData: {},//表单数据
+<<<<<<< .mine
             dialogFormVisible: false,//增加表单是否可见
             dialogFormVisible4Edit: false,//编辑表单是否可见
             rules: {//校验规则
                 name: [{required: true, message: '角色名称为必填项', trigger: 'blur'}],
                 keyword: [{required: true, message: '角色关键字为必填项', trigger: 'blur'}]
             }
+
+
+
+
+=======
+            tableData: [],//添加表单窗口中角色列表数据
+            childMenuIds: [],//添加表单窗口中子菜单复选框对应id
+            roleIds: [],//添加表单窗口中角色复选框对应id
+            checkgroupIds: [],//添加表单窗口中检查组复选框对应id
+            dialogFormVisible: false,//控制添加窗口显示/隐藏
+            dialogFormVisible4Edit: false, //控制编辑窗口显示/隐藏
+            rules: {//校验规则
+                name: [{required: true, message: '角色名称为必填项', trigger: 'blur'}],
+                keyword: [{required: true, message: '角色关键字为必填项', trigger: 'blur'}]
+            }
+>>>>>>> .theirs
         },
         //钩子函数，VUE对象初始化完成后自动执行
         created() {
@@ -187,13 +208,65 @@
                     }
                 })
             },
+<<<<<<< .mine
             //添加
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=======
+            //编辑
+            handleEdit() {
+                // 校验表单输入是否合法
+                this.$refs['dataEditForm'].validate((valid) => {
+                    if (valid) {    // 表单输入合法
+                        axios.post("/role/updateRole.do", this.formData).then(res => {
+                            this.$message({
+                                message: res.data.message,
+                                type: res.data.flag ? 'success' : 'error'
+                            })
+                            this.dialogFormVisible4Edit = false;    // 把编辑弹窗关闭
+                        }).finally(() => {
+                            this.findPage();    // 重新刷新数据
+                        });
+                    } else {    // 表单输入不合法
+                        this.$message.error('表单数据校验失败');
+                        return false;
+                    }
+                })
+            },
+            //添加
+>>>>>>> .theirs
             handleAdd() {
+<<<<<<< .mine
                 // 校验表单输入项是否合法
                 this.$refs['dataAddForm'].validate((valid) => {
                     if (valid) {    // 表单校验通过，发送ajax请求，将数据提交给后台添加数据
                         // 发送ajax数据进行添加
                         axios.post("/checkitem/add.do", this.formData).then(res => {
+=======
+                // 校验表单输入项是否合法
+                this.$refs['dataAddForm'].validate((valid) => {
+                    if (valid) {    // 表单校验通过，发送ajax请求，将数据提交给后台添加数据
+                        // 发送ajax数据进行添加
+                        axios.post("/role/addRole.do", this.formData).then(res => {
+>>>>>>> .theirs
                             this.$message({
                                 message: res.data.message,
                                 type: res.data.flag ? "success" : "error"
@@ -211,11 +284,23 @@
             },
             //分页查询
             findPage() {
+<<<<<<< .mine
                 axios.post("/checkitem/findPage.do", this.pagination).then(res => {
                     if (res.data.flag) {    // 查询成功...
                         this.dataList = res.data.data.rows;  // 绑定数据到表单数据中
                         this.pagination.total = res.data.data.total;  // 绑定分页数据的总记录数
                     } else {    // 查询失败提示
+
+
+=======
+                axios.post('/role/findRoleByPage.do', this.pagination).then(res => {
+                    if (res.data.flag) {
+                        // 绑定分页的结果集
+                        this.dataList = res.data.data.rows;
+                        // 总计录数
+                        this.pagination.total = res.data.data.total;
+                    } else {
+>>>>>>> .theirs
                         this.$message.error(res.data.message);
                     }
                 })
@@ -228,6 +313,27 @@
             handleCreate() {
                 this.resetForm();   // 清空表单
                 this.dialogFormVisible = true;
+<<<<<<< .mine
+
+
+
+
+
+
+
+
+
+=======
+
+                // 加载角色列表数据
+                axios.get('/role/findAllRole.do').then(res => {
+                    if (res.data.flag) {
+                        this.tableData = res.data.data;
+                    } else {
+                        this.$message.error(res.data.message);
+                    }
+                })
+>>>>>>> .theirs
             },
             // 弹出编辑窗口
             handleUpdate(row) {
@@ -241,12 +347,31 @@
             },
             // 删除
             handleDelete(row) {
+<<<<<<< .mine
                 this.$confirm("确认删除项目编码【" + row.code + "】的记录吗？", "提示", {
+
+
+
+
+=======
+                //row套餐行记录
+                var id = row.id;
+                this.$confirm('此操作将【永久删除】该角色, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+>>>>>>> .theirs
                         type: 'warning'
+<<<<<<< .mine
                     }
                 ).then(() => {
                     axios.post("/checkitem/delete.do?id=" + row.id).then(res => {
                         this.$message({ // 提示发是否删除成功...
+=======
+                }).then(() => {
+                    // 点击确定后调用
+                    axios.post('/role/deleteRoleById.do?id=' + id).then(res => {
+                        this.$message({
+>>>>>>> .theirs
                             message: res.data.message,
                             type: res.data.flag ? 'success' : 'error'
                         })

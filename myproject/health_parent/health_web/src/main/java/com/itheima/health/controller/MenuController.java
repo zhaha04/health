@@ -44,14 +44,44 @@ public class MenuController {
     /**
      * 添加菜单，同时添加角色信息
      */
+    @GetMapping("/findMenuById")
+    public Result findMenuById(int id){
+
+        //调用服务
+        Menu menu = menuService.findMenuById(id);
+
+        //返回
+        return new Result(true,MessageConstant.QUERY_MENU_SUCCESS,menu);
+    }
+
+    /**
+     * 通过菜单ID查询所有的角色ID
+     */
+    @GetMapping("/findRoleIdsByMenuId")
+    public Result findRoleIdsByMenuId(int id){
+
+        List<Integer> roleIds = menuService.findRoleIdsByMenuId(id);
+        return new Result(true,MessageConstant.QUERY_ROLE_SUCCESS,roleIds);
+    }
+
+    /**
+     * 添加菜单，同时添加角色信息
+     */
     @PostMapping("/addMenu")
     public Result addMenu(@RequestBody Menu menu,Integer[] roleIds){
 
         //调用服务
-        menuService.addMenu(menu,roleIds);
+        Menu menuInDB = menuService.findMenuByMenuName(menu.getName());
 
-        //返回结果
-        return new Result(true,MessageConstant.ADD_MENU_SUCCESS);
+        if (null == menuInDB){
+            //调用服务
+            menuService.addMenu(menu,roleIds);
+
+            //返回结果
+            return new Result(true,MessageConstant.ADD_MENU_SUCCESS);
+        } else {
+            return new Result(false,"该名称已被占用！");
+        }
     }
 
     /**
@@ -65,6 +95,18 @@ public class MenuController {
         
         //返回
         return new Result(true,MessageConstant.DELETE_MENU_SUCCESS);
+    }
+
+    /**
+     * 修改用户
+     */
+    @RequestMapping("/updateMenu")
+    public Result updateMenu(@RequestBody Menu menu,Integer[] roleIds){
+
+        //调用业务修改
+        menuService.updateMenu(menu,roleIds);
+
+        return new Result(true,MessageConstant.UPDATE_MENU_SUCCESS);
     }
 
 

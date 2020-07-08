@@ -150,10 +150,14 @@
                         <el-tabs v-model="activeName" type="card">
                             <!--基本信息弹窗-->
                             <el-tab-pane label="基本信息" name="first">
-                                <el-form label-position="right" label-width="100px">
+                                <el-form :rules="rules" label-position="right" label-width="100px">
                                     <el-row>
                                         <el-col :span="12">
+<<<<<<< .mine
                                             <el-form-item label="权限名称">
+=======
+                                            <el-form-item label="权限名称" prop="name">
+>>>>>>> .theirs
                                                 <el-input v-model="formData.name"/>
                                             </el-form-item>
                                         </el-col>
@@ -190,7 +194,11 @@
                                         <tbody>
                                         <tr v-for="c in tableData">
                                             <td>
+<<<<<<< .mine
                                                 <input :id="c.id" v-model="checkitemIds" type="checkbox" :value="c.id">
+=======
+                                                <input :id="c.id" v-model="roleIds" type="checkbox" :value="c.id">
+>>>>>>> .theirs
                                             </td>
                                             <td><label :for="c.id">{{c.name}}</label></td>
                                             <td><label :for="c.id">{{c.keyword}}</label></td>
@@ -240,27 +248,53 @@
                                     </el-row>
                                 </el-form>
                             </el-tab-pane>
+<<<<<<< .mine
 
                             <!--角色信息基本弹窗-->
                             <el-tab-pane label="角色信息" name="second">
+=======
+
+                            <!--角色信息基本弹窗-->
+                            <el-tab-pane label="角色设置" name="second">
+>>>>>>> .theirs
                                 <div class="checkScrol">
                                     <table class="datatable">
                                         <thead>
                                         <tr>
                                             <th>选择</th>
+<<<<<<< .mine
                                             <th>角色名称</th>
                                             <th>权限控制</th>
                                             <th>描述</th>
+
+=======
+                                            <th>角色ID</th>
+                                            <th>角色名称</th>
+                                            <th>助记码</th>
+                                            <th>描述</th>
+>>>>>>> .theirs
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr v-for="c in tableData">
+                                        <tr v-for="role in tableData">
                                             <td>
+<<<<<<< .mine
                                                 <input :id="c.id" v-model="checkitemIds" type="checkbox" :value="c.id">
+=======
+                                                <input :id="role.id" v-model="roleIds" type="checkbox" :value="role.id">
+>>>>>>> .theirs
                                             </td>
+<<<<<<< .mine
                                             <td><label :for="c.id">{{c.name}}</label></td>
                                             <td><label :for="c.id">{{c.keyword}}</label></td>
                                             <td><label :for="c.id">{{c.description}}</label></td>
+
+=======
+                                            <td width="100px"><label :for="role.id">{{role.id}}</label></td>
+                                            <td width="150px"><label :for="role.id">{{role.name}}</label></td>
+                                            <td width="200px"><label :for="role.id">{{role.keyword}}</label></td>
+                                            <td><label :for="role.id">{{role.description}}</label></td>
+>>>>>>> .theirs
                                         </tr>
                                         </tbody>
                                     </table>
@@ -297,15 +331,28 @@
                 }
             ],//列表数据
             formData: {},//表单数据
+<<<<<<< .mine
             tableData: [],//新增和编辑表单中对应的权限列表数据
             checkitemIds: [],//新增和编辑表单中角色信息对应的复选框，基于双向绑定可以进行回显和数据提交
+
+
+=======
+            tableData: [],//添加表单窗口中角色列表数据
+            childMenuIds: [],//添加表单窗口中子菜单复选框对应id
+            roleIds: [],//添加表单窗口中角色复选框对应id
+            checkgroupIds: [],//添加表单窗口中检查组复选框对应id
+>>>>>>> .theirs
             dialogFormVisible: false,//控制添加窗口显示/隐藏
-            dialogFormVisible4Edit: false//控制编辑窗口显示/隐藏
+            dialogFormVisible4Edit: false, //控制编辑窗口显示/隐藏
+            rules: {//校验规则
+                name: [{required: true, message: '名称为必填项', trigger: 'blur'}]
+            }
         },
         created() { // 钩子函数，页面加载之前被触发
             this.findPage();
         },
         methods: {
+<<<<<<< .mine
             //编辑
             handleEdit() {
                 axios.post("/checkgroup/update.do?checkitemIds=" + this.checkitemIds, this.formData).then(res => {
@@ -322,6 +369,45 @@
             //添加
             handleAdd() {
                 axios.post("/checkgroup/add.do?checkitemIds=" + this.checkitemIds, this.formData).then(res => {
+=======
+            //编辑
+            handleEdit() {
+                //提交检查组信息this.formData, 选中的检查项id this.checkgroupIds
+                axios.post('/permission/updatePermission.do?roleIds=' + this.roleIds, this.formData).then(res => {
+                    this.$message({
+                        message: res.data.message,
+                        type: res.data.flag ? "success" : "error"
+                    })
+
+
+
+
+
+
+
+
+>>>>>>> .theirs
+                    if (res.data.flag) {
+<<<<<<< .mine
+                        this.dialogFormVisible = false; // 添加成功需要关闭弹窗
+
+
+=======
+                        // 关闭编辑窗口
+                        this.dialogFormVisible4Edit = false;
+                        // 刷新列表数据
+>>>>>>> .theirs
+                        this.findPage();
+                    }
+                    this.$message({ // 添加之后的提示信息
+                        message: res.data.message,
+                        type: res.data.flag ? 'success' : 'error'
+                    });
+                });
+            },
+            //添加
+            handleAdd() {
+                axios.post("/permission/addPermission.do?roleIds=" + this.roleIds, this.formData).then(res => {
                     if (res.data.flag) {
                         this.dialogFormVisible = false; // 添加成功需要关闭弹窗
                         this.findPage();
@@ -334,11 +420,19 @@
             },
             //分页查询
             findPage() {
+<<<<<<< .mine
                 axios.post("/checkgroup/findPage.do", this.pagination).then(res => {
                     if (res.data.flag) {    // 查询成功...
                         this.dataList = res.data.data.rows;  // 绑定数据到表单数据中
                         this.pagination.total = res.data.data.total;  // 绑定分页数据的总记录数
                     } else {    // 查询失败提示
+=======
+                axios.post("/permission/findPermissionByPage.do", this.pagination).then(res => {
+                    if (res.data.flag) {    // 查询成功...
+                        this.dataList = res.data.data.rows;  // 绑定数据到表单数据中
+                        this.pagination.total = res.data.data.total;  // 绑定分页数据的总记录数
+                    } else {    // 查询失败提示
+>>>>>>> .theirs
                         this.$message.error(res.data.message);
                     }
                 });
@@ -351,10 +445,17 @@
             },
             // 弹出添加窗口
             handleCreate() {
+<<<<<<< .mine
                 this.resetForm();   // 调用重置表单的方法
                 this.dialogFormVisible = true;  // 开启弹窗
                 // 发送ajax，查询出所有的检查信息项t_checkitem表格信息
                 axios.get("/checkitem/findAll.do").then(res => {
+=======
+                this.resetForm();   // 调用重置表单的方法
+                this.dialogFormVisible = true;  // 开启弹窗
+                axios.get("/role/findAllRole.do").then(res => {
+
+>>>>>>> .theirs
                     if (res.data.flag) {
                         this.tableData = res.data.data;
                     } else {
@@ -366,12 +467,47 @@
             handleUpdate(row) {
                 // this.resetForm();   // 调用重置表单的方法
                 this.dialogFormVisible4Edit = true;
+<<<<<<< .mine
                 this.formData = row;
                 axios.get("/checkitem/findAll.do").then(res => {
+
+=======
+                // 套餐的id
+                var id = row.id;
+                axios.get("/permission/findPermissionById.do?id=" + id).then(res => {
+>>>>>>> .theirs
                     if (res.data.flag) {
+<<<<<<< .mine
                         this.tableData = res.data.data; // 查询出checkitem检查项中的所有数据
                         axios.get("/checkgroup/findByIdWhitCheckItem.do?id=" + row.id).then(resp => {
                             this.checkitemIds = resp.data.data;  // 根据指定的检查组id查询出所有的检查项id，回显复选框中
+
+
+
+
+
+
+
+
+
+
+
+=======
+                        // 回显套餐信息
+                        this.formData = res.data.data;
+                        // 回显图片
+                        this.imageUrl = res.data.data.imageUrl;
+                        axios.get('/role/findAllRole.do').then(resp => {
+                            if (resp.data.flag) {
+                                this.tableData = resp.data.data;
+                                // 获取选中的角色id
+                                axios.get('/permission/findRoleIdsByPermissionId.do?id=' + id).then(response => {
+                                    if (response.data.flag) {
+                                        this.roleIds = response.data.data;
+                                    } else {
+                                        this.$message.error(response.data.message);
+                                    }
+>>>>>>> .theirs
                         })
                     }
                 })
@@ -383,13 +519,22 @@
             },
             // 删除
             handleDelete(row) {
+<<<<<<< .mine
                 this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+=======
+                this.$confirm('此操作将永久删除该权限, 是否继续?', '提示', {
+>>>>>>> .theirs
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
+<<<<<<< .mine
                     // 发送ajax请求
                     axios.post("/checkgroup/delete.do?id=" + row.id).then(res => {
+=======
+                    // 发送ajax请求
+                    axios.post("/permission/deletePermissionById.do?id=" + row.id).then(res => {
+>>>>>>> .theirs
                         if (res.data.flag) {
                             this.findPage();    // 刷新页面
                         }

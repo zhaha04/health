@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itheima.health.dao.PermissionDao">
+
+    <!--条件查询用户-->
+    <select id="findPermissionByCondition" parameterType="String" resultType="Permission">
+        SELECT
+        p.`id`,
+        p.`name`,
+        p.keyword,
+        p.`description`
+        FROM
+        t_permission p
+        <if test="_parameter != null and _parameter.length > 0">
+            where
+            p.name like #{queryString}
+            or p.keyword like #{queryString}
+        </if>
+        order by p.id
+    </select>
+
+    <!--删除用户角色表中的对应用户-->
+    <delete id="deletePermissionRoleById" parameterType="int">
+        delete 
+        from 
+          t_role_permission
+        where 
+          permission_id = #{id}
+    </delete>
+
+    <!--删除用户表中的对应用户-->
+    <delete id="deletePermissionById" parameterType="int">
+        delete 
+        from 
+          t_permission
+        where 
+          id = #{id}
+    </delete>
+
+    <!--添加空用户-->
+    <insert id="addPermission" parameterType="Permission">
+        <selectKey resultType="int" keyProperty="id" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+        insert
+        into t_permission
+        (name,keyword,description)
+        values
+        (#{name},#{keyword},#{description})
+    </insert>
+
+    <!--绑定用户角色的关系-->
+    <insert id="addPermissionRole" parameterType="int">
+        insert 
+          into t_role_permission
+            (permission_id,role_id)
+          values
+            (#{permissionId},#{roleId})
+    </insert>
+
+    <!--通过ID查询用户-->
+    <select id="findPermissionById" parameterType="int" resultType="Permission">
+        select 
+          *
+        from 
+          t_permission
+        where 
+          id = #{id}
+    </select>
+
+    <!--通过用户ID查询角色ID-->
+    <select id="findRoleIdsByPermissionId" parameterType="int" resultType="int">
+        select 
+          role_id
+        from 
+          t_role_permission
+        where 
+          permission_id = #{id}
+    </select>
+
+    <!--更新用户基本信息-->
+    <update id="updatePermission" parameterType="Permission">
+        update 
+          t_permission
+        set 
+          name=#{name},
+          keyword=#{keyword},
+          description=#{description}
+        where 
+          id =#{id}
+    </update>
+
+    <!--通过名称查询-->
+    <select id="findPermissionByPermissionName" parameterType="String" resultType="Permission">
+        select 
+          p.id,
+          p.name,
+          p.keyword,
+          p.description
+        From
+            t_permission p
+        where 
+          p.name = #{permissionName}
+    </select>
+</mapper>
